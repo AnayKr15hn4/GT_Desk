@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en" data-theme="midnight">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="color-scheme" content="dark light" />
+    <meta name="theme-color" content="#0B1220" />
+    <meta name="description" content="GameTime for desktop: every F1 session and UFC card in your time, and wake-up calls to your phone." />
+    <link rel="manifest" href="/manifest.webmanifest" />
+    <title>GameTime</title>
+    <script>
+      // Paint the saved theme before React mounts, so there is no flash of the wrong one.
+      try {
+        const saved = JSON.parse(localStorage.getItem('gametime-desktop.preferences') || '{}');
+        const mode = saved.state && saved.state.theme;
+        const system = matchMedia('(prefers-color-scheme: light)').matches ? 'porcelain' : 'midnight';
+        document.documentElement.dataset.theme = mode === 'porcelain' || mode === 'midnight' ? mode : mode === 'system' ? system : 'midnight';
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>

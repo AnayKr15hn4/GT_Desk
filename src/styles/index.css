@@ -1,0 +1,458 @@
+@import 'tailwindcss';
+@import '@fontsource-variable/archivo/wdth.css';
+@import 'lenis/dist/lenis.css';
+
+/*
+ * GameTime desktop: a watch dial at night.
+ * Tokens follow the phone app's palette (apps/mobile/src/theme/palette.ts). One accent, champagne
+ * gold. Semantic colors (live, success, warning, danger) are for state only.
+ */
+
+@custom-variant porcelain (&:where([data-theme='porcelain'], [data-theme='porcelain'] *));
+
+:root,
+[data-theme='midnight'] {
+  color-scheme: dark;
+  --canvas: #0b1220;
+  --canvas-deep: #070c17;
+  --surface: #121b2d;
+  --raised: #19243a;
+  --pressed: #1f2c46;
+  --hairline: #222e45;
+  --edge: #2e3b55;
+  --ink: #eef1f6;
+  --ink-2: #a9b2c3;
+  --ink-3: #8590a5;
+  --gold: #d4b67a;
+  --gold-soft: rgba(212, 182, 122, 0.14);
+  --on-gold: #15110a;
+  /* The primary action: champagne gold at night, ink on porcelain (as on the phone). */
+  --primary: #d4b67a;
+  --on-primary: #15110a;
+  --live: #f25f63;
+  --success: #6cc59a;
+  --warning: #e3b95e;
+  --danger: #f25f63;
+  --dial-1: #2a3d66;
+  --dial-2: #16233d;
+  --dial-3: #0e1729;
+  --dial-rim: rgba(212, 182, 122, 0.22);
+  --glass: rgba(12, 19, 34, 0.58);
+  --glass-strong: rgba(12, 19, 34, 0.82);
+  --glass-still: rgba(12, 19, 34, 0.86);
+  --glass-edge: rgba(238, 241, 246, 0.1);
+  --glass-highlight: rgba(255, 255, 255, 0.06);
+  --shadow-1: 0 1px 2px rgba(3, 6, 12, 0.4);
+  --shadow-2: 0 12px 32px rgba(3, 6, 12, 0.5);
+  --shadow-3: 0 48px 96px -32px rgba(2, 4, 10, 0.8), 0 16px 32px -16px rgba(2, 4, 10, 0.6);
+  --scrim: linear-gradient(90deg, rgba(7, 12, 23, 0.94) 0%, rgba(7, 12, 23, 0.72) 34%, rgba(7, 12, 23, 0.12) 64%, rgba(7, 12, 23, 0) 100%);
+  --scrim-bottom: linear-gradient(0deg, var(--canvas) 0%, rgba(11, 18, 32, 0) 100%);
+  --scrim-corner: radial-gradient(120% 85% at 0% 0%, rgba(7, 12, 23, 0.94) 0%, rgba(7, 12, 23, 0.66) 34%, rgba(7, 12, 23, 0) 62%);
+  --sunray: rgba(255, 255, 255, 0.022);
+}
+
+[data-theme='porcelain'] {
+  color-scheme: light;
+  --canvas: #f3f4f6;
+  --canvas-deep: #e9ecf1;
+  --surface: #ffffff;
+  --raised: #eceef2;
+  --pressed: #e3e6eb;
+  --hairline: #e4e7ec;
+  --edge: #d3d8e0;
+  --ink: #0f1726;
+  --ink-2: #4a5466;
+  --ink-3: #5d6679;
+  --gold: #7f6127;
+  --gold-soft: rgba(127, 97, 39, 0.12);
+  --on-gold: #ffffff;
+  --primary: #0f1726;
+  --on-primary: #ffffff;
+  --live: #bf2f2c;
+  --success: #1f7a4d;
+  --warning: #8a5a00;
+  --danger: #bf2f2c;
+  --dial-1: #ffffff;
+  --dial-2: #f1f3f6;
+  --dial-3: #e5e8ee;
+  --dial-rim: rgba(15, 23, 38, 0.08);
+  --glass: rgba(255, 255, 255, 0.66);
+  --glass-strong: rgba(255, 255, 255, 0.86);
+  --glass-still: rgba(255, 255, 255, 0.88);
+  --glass-edge: rgba(15, 23, 38, 0.08);
+  --glass-highlight: rgba(255, 255, 255, 0.7);
+  --shadow-1: 0 1px 2px rgba(15, 23, 38, 0.05);
+  --shadow-2: 0 10px 30px rgba(15, 23, 38, 0.1);
+  --shadow-3: 0 48px 96px -40px rgba(15, 23, 38, 0.28), 0 16px 32px -20px rgba(15, 23, 38, 0.16);
+  --scrim: linear-gradient(90deg, rgba(243, 244, 246, 0.96) 0%, rgba(243, 244, 246, 0.78) 34%, rgba(243, 244, 246, 0.14) 64%, rgba(243, 244, 246, 0) 100%);
+  --scrim-bottom: linear-gradient(0deg, var(--canvas) 0%, rgba(243, 244, 246, 0) 100%);
+  --scrim-corner: radial-gradient(120% 85% at 0% 0%, rgba(243, 244, 246, 0.96) 0%, rgba(243, 244, 246, 0.7) 34%, rgba(243, 244, 246, 0) 62%);
+  --sunray: rgba(15, 23, 38, 0.018);
+  /* Delft blue, for the painted line work that only Porcelain has. */
+  --delft: #23439a;
+}
+
+@theme inline {
+  --color-canvas: var(--canvas);
+  --color-canvas-deep: var(--canvas-deep);
+  --color-surface: var(--surface);
+  --color-raised: var(--raised);
+  --color-pressed: var(--pressed);
+  --color-hairline: var(--hairline);
+  --color-edge: var(--edge);
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-on-gold: var(--on-gold);
+  --color-primary: var(--primary);
+  --color-on-primary: var(--on-primary);
+  --color-live: var(--live);
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-danger: var(--danger);
+  --color-glass: var(--glass);
+  --color-glass-strong: var(--glass-strong);
+  --color-glass-edge: var(--glass-edge);
+  --font-sans: 'Archivo Variable', ui-sans-serif, system-ui, 'Segoe UI', sans-serif;
+  --shadow-1: var(--shadow-1);
+  --shadow-2: var(--shadow-2);
+  --shadow-3: var(--shadow-3);
+  --radius-dial: 28px;
+  --radius-box: 20px;
+  --radius-field: 12px;
+  --ease-out-quint: cubic-bezier(0.23, 1, 0.32, 1);
+  --ease-in-out-quart: cubic-bezier(0.77, 0, 0.175, 1);
+}
+
+@layer base {
+  html {
+    background: var(--canvas);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    scrollbar-color: var(--edge) transparent;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--canvas);
+    line-height: 1.45;
+  }
+
+  ::selection {
+    background: var(--gold-soft);
+    color: var(--ink);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--gold);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  button {
+    cursor: pointer;
+  }
+
+  button:disabled {
+    cursor: default;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+}
+
+/* ── Type: times are the signature (large, ultralight, tabular); names run wide ── */
+
+@utility numerals {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+  font-weight: 200;
+  letter-spacing: -0.035em;
+  font-stretch: 100%;
+}
+
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1, 'lnum' 1;
+}
+
+@utility wide {
+  font-stretch: 125%;
+  letter-spacing: -0.02em;
+}
+
+@utility semiwide {
+  font-stretch: 112%;
+  letter-spacing: -0.01em;
+}
+
+/*
+ * Glass only where something really floats over moving content: panels over the live 3D maps
+ * (the Revolut glass-frame idea from the brief), the nav over scrolling pages, dialog backdrops.
+ * avoid-ai-design-ignore: K3
+ */
+/*
+ * Glass over a live map: the same tint, edge and highlight, without the blur. A blur behind
+ * something that moves is worked out again every frame; a firmer tint reads the same.
+ */
+@utility glass-still {
+  background: var(--glass-still);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-3);
+}
+
+@utility glass {
+  background: var(--glass);
+  border: 1px solid var(--glass-edge);
+  box-shadow:
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-3);
+  backdrop-filter: blur(22px) saturate(1.35);
+  -webkit-backdrop-filter: blur(22px) saturate(1.35);
+}
+
+/*
+ * The dial: a radial "sunburst" lit from the top centre, with a fine sunray finish (the brushed
+ * radial lines of a real watch dial) and a hairline rim like the edge of a crystal.
+ */
+@utility dial {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 0%, var(--sunray) 0deg 0.5deg, transparent 0.5deg 1.25deg),
+    radial-gradient(circle at 50% 0%, var(--dial-1) 0%, var(--dial-2) 55%, var(--dial-3) 100%);
+  box-shadow:
+    inset 0 0 0 1px var(--dial-rim),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-3);
+}
+
+/* The hero's dial card: the same dial, very slightly sheer, so the map and line work behind just show. */
+@utility dial-sheer {
+  background:
+    repeating-conic-gradient(from 0deg at 50% 0%, var(--sunray) 0deg 0.5deg, transparent 0.5deg 1.25deg),
+    radial-gradient(
+      circle at 50% 0%,
+      color-mix(in srgb, var(--dial-1) 90%, transparent) 0%,
+      color-mix(in srgb, var(--dial-2) 88%, transparent) 55%,
+      color-mix(in srgb, var(--dial-3) 86%, transparent) 100%
+    );
+  box-shadow:
+    inset 0 0 0 1px var(--dial-rim),
+    inset 0 1px 0 var(--glass-highlight),
+    var(--shadow-3);
+}
+
+@utility hairline {
+  border-color: var(--hairline);
+}
+
+/* Your night, on the week chronograph: a soft hatch, neutral (gold is for alarms and overnight starts). */
+.night-hatch {
+  background:
+    repeating-linear-gradient(135deg, color-mix(in srgb, var(--ink) 6%, transparent) 0 5px, transparent 5px 10px),
+    color-mix(in srgb, var(--ink) 3%, transparent);
+}
+
+/* ── Motion (Animista-style keyframes, kept few) ── */
+
+@keyframes breathe {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.45;
+    transform: scale(0.82);
+  }
+}
+
+@keyframes focus-in {
+  from {
+    filter: blur(10px);
+    opacity: 0;
+  }
+  to {
+    filter: blur(0);
+    opacity: 1;
+  }
+}
+
+@keyframes pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.55;
+  }
+  100% {
+    transform: scale(2.4);
+    opacity: 0;
+  }
+}
+
+@keyframes shimmer {
+  from {
+    background-position: -200% 0;
+  }
+  to {
+    background-position: 200% 0;
+  }
+}
+
+.live-dot {
+  animation: breathe 2.4s var(--ease-in-out-quart) infinite;
+}
+
+.focus-in {
+  animation: focus-in 0.7s var(--ease-out-quint) both;
+}
+
+.skeleton {
+  background: linear-gradient(90deg, var(--raised) 25%, var(--pressed) 50%, var(--raised) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.6s linear infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* ── Dialogs: native <dialog>, with entry and exit as transitions ── */
+
+dialog.gt-dialog {
+  opacity: 0;
+  transform: translateY(10px) scale(0.975);
+  transition:
+    opacity 0.22s var(--ease-out-quint),
+    transform 0.42s var(--ease-out-quint),
+    overlay 0.42s allow-discrete,
+    display 0.42s allow-discrete;
+  overflow: visible;
+}
+
+dialog.gt-dialog[open] {
+  opacity: 1;
+  transform: none;
+}
+
+@starting-style {
+  dialog.gt-dialog[open] {
+    opacity: 0;
+    transform: translateY(10px) scale(0.975);
+  }
+}
+
+dialog.gt-dialog::backdrop {
+  background: rgba(4, 7, 14, 0);
+  backdrop-filter: blur(0);
+  transition:
+    background 0.3s,
+    backdrop-filter 0.3s,
+    overlay 0.3s allow-discrete,
+    display 0.3s allow-discrete;
+}
+
+dialog.gt-dialog[open]::backdrop {
+  background: rgba(4, 7, 14, 0.55);
+  backdrop-filter: blur(8px);
+}
+
+@starting-style {
+  dialog.gt-dialog[open]::backdrop {
+    background: rgba(4, 7, 14, 0);
+    backdrop-filter: blur(0);
+  }
+}
+
+[data-theme='porcelain'] dialog.gt-dialog[open]::backdrop {
+  background: rgba(15, 23, 38, 0.28);
+}
+
+/* ── MapLibre chrome, restyled to the theme ── */
+
+.maplibregl-ctrl-attrib {
+  background: var(--glass) !important;
+  color: var(--ink-3) !important;
+  font-size: 11px !important;
+  border-radius: 999px 0 0 0 !important;
+  backdrop-filter: blur(12px);
+}
+
+.maplibregl-ctrl-attrib a {
+  color: var(--ink-2) !important;
+}
+
+.maplibregl-ctrl-attrib-button {
+  filter: var(--attrib-filter, invert(1) opacity(0.6));
+}
+
+[data-theme='porcelain'] .maplibregl-ctrl-attrib-button {
+  --attrib-filter: opacity(0.6);
+}
+
+.maplibregl-canvas:focus-visible {
+  outline: none;
+}
+
+/* Delft line work (Porcelain only): hairline cobalt strokes, never in the way of anything. */
+.delft {
+  color: var(--delft);
+  overflow: visible;
+  pointer-events: none;
+  user-select: none;
+}
+/* Widths are in the drawing's own units (set per drawing), not non-scaling-stroke: that made
+   Anime.js measure every line's scale on every frame, forcing a layout each time. */
+.delft path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.delft .delft-line {
+  stroke-width: var(--delft-line, 1.1);
+  stroke-opacity: 0.68;
+}
+.delft .delft-fine {
+  stroke-width: var(--delft-fine, 0.75);
+  stroke-opacity: 0.42;
+}
+
+/* The hero's Delft art: one piece at a time, painted on the light at the left. */
+.delft-hero-fade {
+  /* Its own layer: painting a stroke never repaints what's around it, and scrolling never repaints the art. */
+  will-change: transform;
+  contain: strict;
+}
+/* Each hero piece fades out across its own right side, finishing before its edge, so no boundary shows. */
+.delft-art-fade {
+  mask-image: linear-gradient(90deg, #000 0%, #000 var(--fade-from, 56%), transparent var(--fade-to, 90%));
+}
+/* Behind the headline it stays faint, so the words come first; a scene over the map can ask for more. */
+.delft-hero-fade .delft-line {
+  stroke-opacity: var(--art-line, 0.46);
+}
+.delft-hero-fade .delft-fine {
+  stroke-opacity: var(--art-fine, 0.3);
+}
