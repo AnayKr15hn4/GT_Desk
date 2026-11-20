@@ -45,7 +45,7 @@ export function TopBar() {
           <span className="wide hidden text-[17px] font-[680] tracking-[-0.01em] sm:inline">GameTime</span>
         </NavLink>
 
-        <nav aria-label="Main" className="flex items-center gap-1">
+        <nav data-idle-hide aria-label="Main" className="flex items-center gap-1">
           {links.map((l) => (
             <NavLink
               key={l.to}
@@ -77,6 +77,7 @@ export function TopBar() {
         <div className="ml-auto flex items-center gap-3">
           <Complication />
           <button
+            data-idle-hide
             type="button"
             onClick={() => useUi.getState().open({ kind: 'palette' })}
             className="flex h-9 items-center gap-2.5 rounded-full border border-edge px-3.5 text-[13.5px] text-ink-2 transition-colors hover:border-ink-3 hover:text-ink"
@@ -88,7 +89,9 @@ export function TopBar() {
               <Kbd>K</Kbd>
             </span>
           </button>
-          <AccountButton />
+          <span data-idle-hide className="contents">
+            <AccountButton />
+          </span>
         </div>
       </div>
     </header>

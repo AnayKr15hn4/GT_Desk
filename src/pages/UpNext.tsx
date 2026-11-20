@@ -10,12 +10,14 @@ import { EmptyState } from '@/components/ui/misc';
 import { useSchedule } from '@/hooks/use-schedule';
 import { useNow } from '@/hooks/use-now';
 import { usePageTitle } from '@/hooks/use-page-title';
+import { useScreensaver } from '@/hooks/use-screensaver';
 import type { LngLat } from '@/lib/geo';
 import { upcomingEvents } from '@/lib/schedule';
 import { sportMeta } from '@/lib/sessions';
 
 export function UpNextPage() {
   usePageTitle(null);
+  useScreensaver(true);
   const { items, events, isLoading, isError, failedSports, refetch, next } = useSchedule();
   const now = useNow(60_000);
   // Gold points on the globe: every venue still to come this season.

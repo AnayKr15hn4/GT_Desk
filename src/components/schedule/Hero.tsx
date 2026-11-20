@@ -148,13 +148,13 @@ function HeroCopy({ item }: { item: ScheduleItem }) {
   const { venue } = item.event;
   return (
     <div className="flex max-w-full flex-col gap-[clamp(10px,2.2vh,20px)] lg:max-w-[min(760px,52vw)]">
-      <p data-hero-kicker className="text-[15px] font-[560] text-ink-2">
+      <p data-hero-kicker data-idle-hide className="text-[15px] font-[560] text-ink-2">
         {kicker}
       </p>
       <h1 data-hero-title className="wide text-[clamp(48px,min(5.7vw,10.5vh),104px)] leading-[0.9] font-[680] tracking-[-0.035em] text-ink">
         {title}
       </h1>
-      <p data-hero-venue className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[16px] text-ink-2">
+      <p data-hero-venue data-idle-hide className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[16px] text-ink-2">
         <Icon name="pin" size={18} />
         <span>
           {venue.name}, {venue.city}, {venue.country}
@@ -197,7 +197,7 @@ function DialCard({ item }: { item: ScheduleItem }) {
   const offset = venueOffsetLine(session.startUtc, timeZone, event.venue.timeZone);
 
   return (
-    <div data-hero-dial className="dial-sheer w-full max-w-[640px] rounded-[28px] lg:w-[min(640px,48vw)]">
+    <div data-hero-dial data-idle-hide className="dial-sheer w-full max-w-[640px] rounded-[28px] lg:w-[min(640px,48vw)]">
       <SpotlightCard
         className="rounded-[28px]! p-0! [--spotlight-card-border:transparent]"
         style={{ '--spotlight-card-surface': 'transparent', '--spotlight-card-shadow': 'none' } as React.CSSProperties}
@@ -268,18 +268,18 @@ function HeroChips({ item, lapKm, precise, kind }: { item: ScheduleItem; lapKm?:
   return (
     <div className="hidden shrink-0 flex-col items-end gap-2.5 pt-1 lg:flex">
       {!event.venue.indoor ? (
-        <div data-hero-chip className={chip}>
+        <div data-hero-chip data-idle-hide className={chip}>
           <WeatherReading event={event} startUtc={session.startUtc} compact />
         </div>
       ) : null}
       {lapKm ? (
-        <div data-hero-chip className={chip}>
+        <div data-hero-chip data-idle-hide className={chip}>
           <Icon name="flag" size={17} className="text-ink-2" />
           <span className="tabular">{lapKm.toFixed(3)} km lap</span>
         </div>
       ) : null}
       {event.venue.timeZone ? (
-        <div data-hero-chip className={chip}>
+        <div data-hero-chip data-idle-hide className={chip}>
           <Icon name="clock" size={17} className="text-ink-2" />
           <span>
             It's <span className="tabular">{formatClock(now.toISOString(), event.venue.timeZone, hour12)}</span> in {event.venue.city}
@@ -287,7 +287,7 @@ function HeroChips({ item, lapKm, precise, kind }: { item: ScheduleItem; lapKm?:
         </div>
       ) : null}
       {kind === 'arena' && !precise ? (
-        <div data-hero-chip className={chip}>
+        <div data-hero-chip data-idle-hide className={chip}>
           <Icon name="pin" size={17} className="text-ink-2" />
           <span className="text-ink-2">Map shows {event.venue.city}; the arena isn't on the map by name</span>
         </div>
