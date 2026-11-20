@@ -8,6 +8,7 @@ import { Kbd } from '@/components/ui/misc';
 import { useAlarms } from '@/data/queries';
 import { useNow } from '@/hooks/use-now';
 import { nextAlarm } from '@/lib/alarms';
+import { modKey } from '@/lib/platform';
 import { clockParts, formatRelative, zoneAbbreviation } from '@/lib/time';
 import { useClock } from '@/stores/preferences';
 import { useSession } from '@/stores/session';
@@ -19,8 +20,6 @@ const links = [
   { to: '/alarms', label: 'Alarms' },
   { to: '/settings', label: 'Settings' },
 ];
-
-const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform);
 
 export function TopBar() {
   const [scrolled, setScrolled] = useState(false);
@@ -39,13 +38,14 @@ export function TopBar() {
         scrolled ? 'border-b border-glass-edge bg-glass-strong backdrop-blur-xl' : 'border-b border-transparent',
       )}
     >
-      <div className="mx-auto flex h-16 max-w-[1680px] items-center gap-4 px-5 md:gap-8 md:px-8">
-        <NavLink to="/" className="flex items-center gap-2.5 rounded-full pr-2" aria-label="GameTime, up next">
+      <div className="mx-auto flex h-16 max-w-[1680px] items-center gap-3 px-5 md:gap-6 md:px-8 lg:gap-8">
+        <NavLink to="/" className="flex shrink-0 items-center gap-2.5 rounded-full pr-2" aria-label="GameTime, up next">
           <Mark size={28} />
           <span className="wide hidden text-[17px] font-[680] tracking-[-0.01em] sm:inline">GameTime</span>
         </NavLink>
 
-        <nav data-idle-hide aria-label="Main" className="flex items-center gap-1">
+        {/* Narrow windows: the links scroll sideways rather than push Sign in off the edge (room below for the gold mark). */}
+        <nav data-idle-hide aria-label="Main" className="flex min-w-0 items-center gap-1 max-md:-mb-1 max-md:overflow-x-auto max-md:pb-1 max-md:[scrollbar-width:none]">
           {links.map((l) => (
             <NavLink
               key={l.to}
@@ -53,7 +53,7 @@ export function TopBar() {
               end={l.end}
               className={({ isActive }) =>
                 clsx(
-                  'relative rounded-full px-3.5 py-2 text-[14px] font-[560] transition-colors duration-200',
+                  'relative shrink-0 rounded-full px-3 py-2 text-[14px] font-[560] whitespace-nowrap transition-colors duration-200 md:px-3.5',
                   isActive ? 'text-ink' : 'text-ink-2 hover:text-ink',
                 )
               }
@@ -74,24 +74,25 @@ export function TopBar() {
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-3">
+        <div className="ml-auto flex shrink-0 items-center gap-3">
           <Complication />
-          <button
-            data-idle-hide
-            type="button"
-            onClick={() => useUi.getState().open({ kind: 'palette' })}
-            className="flex h-9 items-center gap-2.5 rounded-full border border-edge px-3.5 text-[13.5px] text-ink-2 transition-colors hover:border-ink-3 hover:text-ink"
-          >
-            <Icon name="search" size={16} />
-            <span className="hidden md:inline">Search</span>
-            <span className="hidden items-center gap-0.5 md:flex">
-              <Kbd>{isMac ? '⌘' : 'Ctrl'}</Kbd>
-              <Kbd>K</Kbd>
-            </span>
-          </button>
-          <span data-idle-hide className="contents">
-            <AccountButton />
-          </span>
+          {/* Wrapped: the screensaver's fade would replace the button's own colour transition. */}
+          <div data-idle-hide>
+            <button
+              type="button"
+              onClick={() => useUi.getState().open({ kind: 'palette' })}
+              aria-label="Search"
+              className="flex h-9 items-center gap-2.5 rounded-full border border-edge px-3.5 text-[13.5px] text-ink-2 transition-colors hover:border-ink-3 hover:text-ink"
+            >
+              <Icon name="search" size={16} />
+              <span className="hidden lg:inline">Search</span>
+              <span className="hidden items-center gap-0.5 lg:flex">
+                <Kbd>{modKey}</Kbd>
+                <Kbd>K</Kbd>
+              </span>
+            </button>
+          </div>
+          <AccountButton />
         </div>
       </div>
     </header>

@@ -40,7 +40,8 @@ export function Row({
       role={clickable ? 'button' : undefined}
       aria-pressed={clickable && selected !== undefined ? selected : undefined}
       className={clsx(
-        'flex min-h-14 items-center gap-4 px-5 py-3.5 transition-colors duration-150',
+        // Wraps in a narrow window: a control that doesn't fit beside its label drops below it instead of being cut off.
+        'flex min-h-14 flex-wrap items-center gap-4 px-5 py-3.5 transition-colors duration-150',
         clickable && 'cursor-pointer hover:bg-raised focus-visible:bg-raised focus-visible:outline-none',
         className,
       )}

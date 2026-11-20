@@ -1,10 +1,11 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router';
 
+import { modKey } from '@/lib/platform';
 import { useUi } from '@/stores/ui';
 
 export const shortcutList: { keys: string[]; label: string }[] = [
-  { keys: ['⌘ K', 'Ctrl K', '/'], label: 'Search events and sessions' },
+  { keys: [`${modKey} K`, '/'], label: 'Search events and sessions' },
   { keys: ['G then U'], label: 'Go to Up next' },
   { keys: ['G then S'], label: 'Go to Season' },
   { keys: ['G then A'], label: 'Go to Alarms' },

@@ -16,7 +16,7 @@ import { useNow } from '@/hooks/use-now';
 import { usePageTitle } from '@/hooks/use-page-title';
 import type { LngLat } from '@/lib/geo';
 import { eventSpan, eventStatus, headlineSession } from '@/lib/schedule';
-import { formatClock, formatShortDate } from '@/lib/time';
+import { formatClock } from '@/lib/time';
 import type { Sport, SportEvent } from '@/lib/types';
 import { useClock } from '@/stores/preferences';
 
@@ -129,12 +129,13 @@ export function SeasonPage() {
                 onFocus={() => setHovered(e)}
                 onClick={() => navigate(`/event/${e.id}`)}
                 className={clsx(
-                  'group flex w-full items-center gap-4 rounded-[16px] px-3 py-3 text-left transition-colors hover:bg-[color-mix(in_srgb,var(--ink)_6%,transparent)]',
+                  'group flex w-full items-center gap-3 rounded-[16px] px-3 py-3 text-left transition-colors hover:bg-[color-mix(in_srgb,var(--ink)_6%,transparent)] sm:gap-4',
                   done && 'opacity-55',
                 )}
               >
-                <span className="flex w-[74px] shrink-0 flex-col">
-                  <span className="tabular text-[13px] font-[600] text-ink">{formatShortDate(span.firstUtc, timeZone).split(', ')[1]}</span>
+                <span className="flex w-[60px] shrink-0 flex-col sm:w-[74px]">
+                  {/* The day of the session whose time is shown, so the date and time read together. */}
+                  <span className="tabular text-[13px] font-[600] text-ink">{formatInTimeZone(headline?.startUtc ?? span.firstUtc, timeZone, 'MMM d')}</span>
                   <span className="text-[11.5px] text-ink-3">{e.sport === 'f1' ? (e.round ? `Round ${e.round}` : 'F1') : 'UFC'}</span>
                 </span>
                 <span className="flex min-w-0 flex-1 flex-col">
@@ -155,7 +156,8 @@ export function SeasonPage() {
                     <span className="text-[11.5px] text-ink-3">{headline.label}</span>
                   </span>
                 ) : null}
-                <Icon name="chevronRight" size={16} className="text-ink-3 opacity-0 transition-opacity group-hover:opacity-100" />
+                {/* Shown on hover, so it has no use (or room) on a phone. */}
+                <Icon name="chevronRight" size={16} className="text-ink-3 opacity-0 transition-opacity group-hover:opacity-100 max-sm:hidden" />
               </button>
             );
           })}

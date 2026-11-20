@@ -43,12 +43,13 @@ export function AlarmButton({ eventId, sessionId, className }: { eventId: string
         openSetAlarm(eventId, [sessionId]);
       }}
       className={clsx(
-        'inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-edge px-3 text-[12.5px] font-[580] text-ink-2 transition-[color,border-color,transform] hover:border-ink-3 hover:text-ink active:scale-[0.97]',
+        'inline-flex h-8 shrink-0 items-center gap-1.5 rounded-full border border-edge px-3 text-[12.5px] font-[580] text-ink-2 transition-[color,border-color,transform] hover:border-ink-3 hover:text-ink active:scale-[0.97] max-sm:w-8 max-sm:justify-center max-sm:px-0',
         className,
       )}
     >
       <Icon name="bell" size={14} />
-      Set wake-up
+      {/* Phones: the bell alone, still named for screen readers, so the session keeps its room. */}
+      <span className="max-sm:sr-only">Set wake-up</span>
     </button>
   );
 }

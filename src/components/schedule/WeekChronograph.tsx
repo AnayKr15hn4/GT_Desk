@@ -23,6 +23,8 @@ import { openSetAlarm } from '@/stores/ui';
 const LANE = 30;
 const MIN_BLOCK_PX = 96;
 const HOURS = [0, 3, 6, 9, 12, 15, 18, 21];
+/** Hour labels every 3 hours where there's room, every 6 in a narrow window (gridlines stay at 3). */
+const labelHours = (laneWidth: number) => (laneWidth > 0 && laneWidth < 560 ? [0, 6, 12, 18] : HOURS);
 
 function hourLabel(h: number, hour12: boolean) {
   if (!hour12) return `${String(h).padStart(2, '0')}:00`;
@@ -109,7 +111,7 @@ export function WeekChronograph({ items }: { items: ScheduleItem[] }) {
             : `${sessions} ${sessions === 1 ? 'session' : 'sessions'} in the next seven days, on your clock. ${overnight ? `${overnight} start${overnight === 1 ? 's' : ''} during your night.` : 'None during your night.'}`
         }
         action={
-          <div className="flex items-center gap-5 text-[13px] text-ink-2">
+          <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-[13px] text-ink-2">
             <span className="flex items-center gap-2">
               <span className="night-hatch h-3.5 w-7 rounded-[4px] border border-hairline" />
               Your night, {formatMinuteOfDay(night.startMin, hour12)} to {formatMinuteOfDay(night.endMin, hour12)}
@@ -128,8 +130,8 @@ export function WeekChronograph({ items }: { items: ScheduleItem[] }) {
       <div ref={trackRef} className="relative rounded-[28px] border border-hairline bg-surface p-6 shadow-1" onMouseLeave={() => setHover(null)}>
         {/* Hour scale (also measures the track width) */}
         <div ref={laneRef} className="relative ml-[100px] h-6 md:ml-[148px]">
-          {HOURS.map((h) => (
-            <span key={h} className="absolute top-0 -translate-x-1/2 text-[11.5px] font-[540] text-ink-3 tabular" style={{ left: `${(h / 24) * 100}%` }}>
+          {labelHours(lane.width).map((h) => (
+            <span key={h} className="absolute top-0 -translate-x-1/2 text-[11.5px] font-[540] whitespace-nowrap text-ink-3 tabular" style={{ left: `${(h / 24) * 100}%` }}>
               {hourLabel(h, hour12)}
             </span>
           ))}
@@ -163,12 +165,15 @@ export function WeekChronograph({ items }: { items: ScheduleItem[] }) {
                   {row.blocks.map((block, i) => {
                     const { event, session } = block.item;
                     const alarm = alarms.data ? alarmForSession(alarms.data, session.id, now) : undefined;
-                    const overnightStart = block.isStart && isOvernight(session.startUtc, timeZone, night);
+                    // Tone follows the session, so the piece after midnight matches the piece before it.
+                    const overnightStart = isOvernight(session.startUtc, timeZone, night);
                     const live = sessionState(session, now) === 'live';
                     // The piece after midnight is a plain extension of the one before, so it keeps its true length.
                     const width = block.isStart ? Math.max(toPercent(block.toMin) - toPercent(block.fromMin), minWidthPct) : toPercent(block.toMin);
                     // Late starts keep their label inside the track.
                     const left = Math.min(toPercent(block.fromMin), 100 - width);
+                    // A short piece after midnight in a narrow window: tone only, no clipped sliver of a label.
+                    const tailLabel = !block.isStart && (width / 100) * lane.width >= 44;
                     return (
                       <button
                         key={`${session.id}-${block.isStart}`}
@@ -180,13 +185,15 @@ export function WeekChronograph({ items }: { items: ScheduleItem[] }) {
                         onBlur={() => setHover(null)}
                         aria-label={`${session.label}, ${event.name}, ${formatDayLabel(session.startUtc, timeZone, now)}`}
                         className={clsx(
-                          'absolute z-[2] flex h-[24px] origin-left items-center gap-1.5 overflow-hidden rounded-full px-2.5 text-left text-[11.5px] font-[600] whitespace-nowrap transition-[filter,transform] duration-150 hover:brightness-110',
+                          // Only the hover filter transitions: the fill-in animation sets transform itself.
+                          'absolute z-[2] flex h-[24px] origin-left items-center gap-1.5 overflow-hidden rounded-full text-left text-[11.5px] font-[600] whitespace-nowrap transition-[filter] duration-150 hover:brightness-110',
+                          block.isStart ? 'px-2.5' : 'px-2',
                           alarm
                             ? 'bg-gold text-on-gold'
                             : overnightStart
                               ? 'border border-[color-mix(in_srgb,var(--gold)_55%,transparent)] bg-[color-mix(in_srgb,var(--gold)_12%,var(--raised))] text-gold'
                               : 'border border-edge bg-raised text-ink',
-                          !block.isStart && 'rounded-l-md opacity-80',
+                          !block.isStart && 'rounded-l-md opacity-75',
                           live && 'ring-2 ring-live/70',
                         )}
                         style={{ left: `${left}%`, width: `${width}%`, top: 12 + lanes[i] * LANE }}
@@ -199,6 +206,9 @@ export function WeekChronograph({ items }: { items: ScheduleItem[] }) {
                               <span className="font-[450] opacity-75"> {event.shortName}</span>
                             </span>
                           </>
+                        ) : tailLabel ? (
+                          // The rest of a session that runs past midnight: its short name, so it isn't an empty pill.
+                          <span className="truncate">{sessionLabels[session.kind].short}</span>
                         ) : null}
                       </button>
                     );
@@ -235,7 +245,8 @@ function HoverCard({ block }: { block: WeekBlock }) {
   const { event, session } = block.item;
   const venue = venueTimeLine(session.startUtc, event.venue, hour12);
   return (
-    <div className="glass pointer-events-auto flex flex-col gap-3 rounded-[20px] p-4.5">
+    // Solid, not glass: over the grid the hour labels showed through.
+    <div className="pointer-events-auto flex flex-col gap-3 rounded-[20px] border border-edge bg-raised p-4.5 shadow-3">
       <div className="flex flex-col gap-0.5">
         <span className="text-[13px] text-ink-2">{event.name}</span>
         <span className="text-[16px] font-[620]">{session.label}</span>

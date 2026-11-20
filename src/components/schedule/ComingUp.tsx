@@ -57,10 +57,11 @@ function SessionRow({ item }: { item: ScheduleItem }) {
   const live = sessionState(session, now) === 'live';
   const venue = venueTimeLine(session.startUtc, event.venue, hour12);
   return (
-    <Row onClick={() => navigate(`/event/${event.id}`)} className="group gap-6">
-      <Clock iso={session.startUtc} timeZone={timeZone} hour12={hour12} size="row" className="w-[104px] shrink-0" />
+    <Row onClick={() => navigate(`/event/${event.id}`)} className="group flex-nowrap gap-4 sm:gap-6">
+      <Clock iso={session.startUtc} timeZone={timeZone} hour12={hour12} size="row" className="w-[84px] shrink-0 sm:w-[104px]" />
       <div className="flex min-w-0 flex-1 flex-col gap-0.5">
-        <span className="flex items-center gap-2.5">
+        {/* In a narrow window the tags drop under the session's name rather than squeeze it to a letter. */}
+        <span className="flex flex-wrap items-center gap-x-2.5 gap-y-1">
           <span className="truncate text-[15.5px] font-[600]">{session.label}</span>
           {live ? <Tag tone="live">Live</Tag> : null}
           {!live && isOvernight(session.startUtc, timeZone, night) ? (

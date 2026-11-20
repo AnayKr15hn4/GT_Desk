@@ -148,21 +148,29 @@ function HeroCopy({ item }: { item: ScheduleItem }) {
   const { venue } = item.event;
   return (
     <div className="flex max-w-full flex-col gap-[clamp(10px,2.2vh,20px)] lg:max-w-[min(760px,52vw)]">
-      <p data-hero-kicker data-idle-hide className="text-[15px] font-[560] text-ink-2">
-        {kicker}
-      </p>
+      {/* The screensaver fades the wrappers; the intro animates what's inside (never both on one element). */}
+      <div data-idle-hide>
+        <p data-hero-kicker className="text-[15px] font-[560] text-ink-2">
+          {kicker}
+        </p>
+      </div>
       <h1 data-hero-title className="wide text-[clamp(48px,min(5.7vw,10.5vh),104px)] leading-[0.9] font-[680] tracking-[-0.035em] text-ink">
         {title}
       </h1>
-      <p data-hero-venue data-idle-hide className="flex flex-wrap items-center gap-x-2 gap-y-1 text-[16px] text-ink-2">
-        <Icon name="pin" size={18} />
-        <span>
-          {venue.name}, {venue.city}, {venue.country}
-        </span>
-        <Link to={`/event/${item.event.id}`} className="ml-2 font-[600] whitespace-nowrap text-gold hover:underline">
-          Event details
-        </Link>
-      </p>
+      <div data-idle-hide>
+        <p data-hero-venue className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[16px] text-ink-2">
+          {/* The pin stays with the venue when a narrow window wraps the line. */}
+          <span className="flex min-w-0 items-start gap-2">
+            <Icon name="pin" size={18} className="mt-[3px] shrink-0" />
+            <span>
+              {venue.name}, {venue.city}, {venue.country}
+            </span>
+          </span>
+          <Link to={`/event/${item.event.id}`} className="font-[600] whitespace-nowrap text-gold hover:underline">
+            Event details
+          </Link>
+        </p>
+      </div>
     </div>
   );
 }
@@ -197,64 +205,66 @@ function DialCard({ item }: { item: ScheduleItem }) {
   const offset = venueOffsetLine(session.startUtc, timeZone, event.venue.timeZone);
 
   return (
-    <div data-hero-dial data-idle-hide className="dial-sheer w-full max-w-[640px] rounded-[28px] lg:w-[min(640px,48vw)]">
-      <SpotlightCard
-        className="rounded-[28px]! p-0! [--spotlight-card-border:transparent]"
-        style={{ '--spotlight-card-surface': 'transparent', '--spotlight-card-shadow': 'none' } as React.CSSProperties}
-        spotlightColor="rgba(212, 182, 122, 0.55)"
-        intensity={0.12}
-        spotlightSize={340}
-        borderGlow={0.5}
-      >
-        <div className="flex flex-col p-[clamp(20px,3.6vh,32px)]">
-          <div className="flex items-center gap-3">
-            <span className="semiwide text-[18px] font-[640]">{session.label}</span>
-            {state === 'live' ? <Tag tone="live">Live now</Tag> : null}
-            {state === 'upcoming' && isOvernight(session.startUtc, timeZone, night) ? (
-              <Tag tone="gold" icon="moon">
-                Overnight
-              </Tag>
-            ) : null}
-            {session.isEstimated ? <Tag>Estimated start</Tag> : null}
-            <span className="ml-auto text-[13px] text-ink-3">Your time</span>
-          </div>
-          <Clock iso={session.startUtc} timeZone={timeZone} hour12={hour12} size="mega" className="mt-[clamp(8px,1.8vh,16px)] -ml-1 text-ink" />
-          <div className="mt-[clamp(8px,1.8vh,16px)] flex flex-wrap items-baseline gap-x-5 gap-y-1">
-            <span className="text-[17px] font-[540]">{formatLongDate(session.startUtc, timeZone)}</span>
-            {venueLine ? (
-              <span className="text-[15px] text-ink-2">
-                {venueLine}
-                {offset && offset !== 'Same time as you' ? `, ${offset}` : ''}
-              </span>
-            ) : null}
-          </div>
-          <div className="my-[clamp(12px,2.6vh,24px)] h-px bg-[var(--dial-rim)]" />
-          <div className="flex items-end justify-between gap-6">
-            <div className="flex flex-col gap-1">
-              <span className="text-[13px] text-ink-3">{state === 'live' ? 'Started' : 'Starts in'}</span>
-              {state === 'live' ? (
-                <span className="numerals text-[30px] leading-none text-ink">{formatClock(session.startUtc, timeZone, hour12)}</span>
-              ) : (
-                <RollingText text={formatCountdown(countdown(session.startUtc, now))} className="text-[clamp(24px,3.6vh,30px)] leading-none font-[250] tracking-[-0.02em] whitespace-nowrap text-ink" />
-              )}
+    <div data-idle-hide className="w-full max-w-[640px] lg:w-[min(640px,48vw)]">
+      <div data-hero-dial className="dial-sheer rounded-[28px]">
+        <SpotlightCard
+          className="rounded-[28px]! p-0! [--spotlight-card-border:transparent]"
+          style={{ '--spotlight-card-surface': 'transparent', '--spotlight-card-shadow': 'none' } as React.CSSProperties}
+          spotlightColor="rgba(212, 182, 122, 0.55)"
+          intensity={0.12}
+          spotlightSize={340}
+          borderGlow={0.5}
+        >
+          <div className="flex flex-col p-[clamp(20px,3.6vh,32px)]">
+            <div className="flex items-center gap-3">
+              <span className="semiwide text-[18px] font-[640]">{session.label}</span>
+              {state === 'live' ? <Tag tone="live">Live now</Tag> : null}
+              {state === 'upcoming' && isOvernight(session.startUtc, timeZone, night) ? (
+                <Tag tone="gold" icon="moon">
+                  Overnight
+                </Tag>
+              ) : null}
+              {session.isEstimated ? <Tag>Estimated start</Tag> : null}
+              <span className="ml-auto text-[13px] text-ink-3">Your time</span>
             </div>
-            <div className="flex items-center gap-2">
-              {alarm ? (
-                <Link to="/alarms" className="inline-flex h-13 items-center gap-2 rounded-full bg-gold-soft px-6 text-[15px] font-[600] text-gold">
-                  <Icon name={alarm.alertType === 'call' ? 'phone' : 'bellRing'} size={18} />
-                  Wake-up at {formatClock(alarm.alertTimeUtc, timeZone, hour12)}
-                </Link>
-              ) : state === 'upcoming' ? (
-                <Magnet padding={60} magnetStrength={4} maxOffset={10}>
-                  <Button variant="primary" size="lg" icon="bellRing" onClick={() => openSetAlarm(event.id, [session.id])}>
-                    Set wake-up call
-                  </Button>
-                </Magnet>
+            <Clock iso={session.startUtc} timeZone={timeZone} hour12={hour12} size="mega" className="mt-[clamp(8px,1.8vh,16px)] -ml-1 text-ink" />
+            <div className="mt-[clamp(8px,1.8vh,16px)] flex flex-wrap items-baseline gap-x-5 gap-y-1">
+              <span className="text-[17px] font-[540]">{formatLongDate(session.startUtc, timeZone)}</span>
+              {venueLine ? (
+                <span className="text-[15px] text-ink-2">
+                  {venueLine}
+                  {offset && offset !== 'Same time as you' ? `, ${offset}` : ''}
+                </span>
               ) : null}
             </div>
+            <div className="my-[clamp(12px,2.6vh,24px)] h-px bg-[var(--dial-rim)]" />
+            <div className="flex flex-wrap items-end justify-between gap-x-6 gap-y-4">
+              <div className="flex flex-col gap-1">
+                <span className="text-[13px] text-ink-3">{state === 'live' ? 'Started' : 'Starts in'}</span>
+                {state === 'live' ? (
+                  <span className="numerals text-[30px] leading-none text-ink">{formatClock(session.startUtc, timeZone, hour12)}</span>
+                ) : (
+                  <RollingText text={formatCountdown(countdown(session.startUtc, now))} className="text-[clamp(24px,3.6vh,30px)] leading-none font-[250] tracking-[-0.02em] whitespace-nowrap text-ink" />
+                )}
+              </div>
+              <div className="flex items-center gap-2">
+                {alarm ? (
+                  <Link to="/alarms" className="inline-flex h-13 items-center gap-2 rounded-full bg-gold-soft px-6 text-[15px] font-[600] text-gold">
+                    <Icon name={alarm.alertType === 'call' ? 'phone' : 'bellRing'} size={18} />
+                    Wake-up at {formatClock(alarm.alertTimeUtc, timeZone, hour12)}
+                  </Link>
+                ) : state === 'upcoming' ? (
+                  <Magnet padding={60} magnetStrength={4} maxOffset={10}>
+                    <Button variant="primary" size="lg" icon="bellRing" onClick={() => openSetAlarm(event.id, [session.id])}>
+                      Set wake-up call
+                    </Button>
+                  </Magnet>
+                ) : null}
+              </div>
+            </div>
           </div>
-        </div>
-      </SpotlightCard>
+        </SpotlightCard>
+      </div>
     </div>
   );
 }
@@ -266,20 +276,20 @@ function HeroChips({ item, lapKm, precise, kind }: { item: ScheduleItem; lapKm?:
   // Over the orbiting map: still glass, so nothing is blurred again every frame.
   const chip = 'glass-still flex items-center gap-2.5 rounded-full px-4.5 py-2.5 text-[13.5px] !shadow-none';
   return (
-    <div className="hidden shrink-0 flex-col items-end gap-2.5 pt-1 lg:flex">
+    <div data-idle-hide className="hidden shrink-0 flex-col items-end gap-2.5 pt-1 lg:flex">
       {!event.venue.indoor ? (
-        <div data-hero-chip data-idle-hide className={chip}>
+        <div data-hero-chip className={chip}>
           <WeatherReading event={event} startUtc={session.startUtc} compact />
         </div>
       ) : null}
       {lapKm ? (
-        <div data-hero-chip data-idle-hide className={chip}>
+        <div data-hero-chip className={chip}>
           <Icon name="flag" size={17} className="text-ink-2" />
           <span className="tabular">{lapKm.toFixed(3)} km lap</span>
         </div>
       ) : null}
       {event.venue.timeZone ? (
-        <div data-hero-chip data-idle-hide className={chip}>
+        <div data-hero-chip className={chip}>
           <Icon name="clock" size={17} className="text-ink-2" />
           <span>
             It's <span className="tabular">{formatClock(now.toISOString(), event.venue.timeZone, hour12)}</span> in {event.venue.city}
@@ -287,7 +297,7 @@ function HeroChips({ item, lapKm, precise, kind }: { item: ScheduleItem; lapKm?:
         </div>
       ) : null}
       {kind === 'arena' && !precise ? (
-        <div data-hero-chip data-idle-hide className={chip}>
+        <div data-hero-chip className={chip}>
           <Icon name="pin" size={17} className="text-ink-2" />
           <span className="text-ink-2">Map shows {event.venue.city}; the arena isn't on the map by name</span>
         </div>

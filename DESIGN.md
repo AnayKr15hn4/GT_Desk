@@ -110,6 +110,11 @@ second shape.
   nothing over the map blurs.
 - **Reduced motion.** With the computer's reduced-motion setting, the camera jumps instead of
   flying, nothing orbits or laps, smooth scrolling is off and every transition is instant.
+- **Screensaver.** On Up next, after 7 still seconds at the top of the page, everything marked
+  `data-idle-hide` fades out (cards, chips, nav, search) and the cursor hides, leaving the event
+  name, the clock and the logo over the map; any mouse, key, scroll or touch brings it back.
+  Put `data-idle-hide` on a wrapper, never on an element a GSAP intro animates: a `.from()` reads
+  the element's own styles to know where to finish, and the fade there leaves it stuck halfway.
 
 ## Copy
 

@@ -1,4 +1,5 @@
 import { useGSAP } from '@gsap/react';
+import clsx from 'clsx';
 import gsap from 'gsap';
 import { SplitText } from 'gsap/SplitText';
 import { useMemo, useRef, useState } from 'react';
@@ -22,6 +23,7 @@ import { useElementSize } from '@/hooks/use-element-size';
 import { useNow } from '@/hooks/use-now';
 import { usePageTitle } from '@/hooks/use-page-title';
 import { displayName } from '@/lib/names';
+import { modKey } from '@/lib/platform';
 import { groupByLocalDay, headlineSession, sessionState } from '@/lib/schedule';
 import {
   formatClock,
@@ -167,7 +169,7 @@ function EventView({ event }: { event: SportEvent }) {
               <IconButton icon={orbit ? 'pause' : 'play'} label={orbit ? 'Stop orbiting' : 'Orbit the venue'} onClick={() => setOrbit((o) => !o)} size={36} />
               <IconButton icon="rotate" label="Recenter the map" onClick={() => setNonce((n) => n + 1)} size={36} />
             </div>
-            <span className="text-[12.5px] text-ink-3">Drag to turn the map. Hold Ctrl or ⌘ and scroll to zoom.</span>
+            <span className="text-[12.5px] text-ink-3">Drag to turn the map. Hold {modKey} and scroll to zoom.</span>
           </div>
         </div>
 
@@ -264,8 +266,8 @@ function SessionsPanel({ event, floating = false }: { event: SportEvent; floatin
               const state = sessionState(session, now);
               const venue = venueTimeLine(session.startUtc, event.venue, hour12);
               return (
-                <div key={session.id} className="flex items-center gap-4 rounded-[16px] px-3 py-3 transition-colors hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)]">
-                  <Clock iso={session.startUtc} timeZone={timeZone} hour12={hour12} size="row" className={state === 'finished' ? 'w-[96px] opacity-45' : 'w-[96px]'} />
+                <div key={session.id} className="flex items-center gap-3 rounded-[16px] px-3 py-3 transition-colors hover:bg-[color-mix(in_srgb,var(--ink)_5%,transparent)] sm:gap-4">
+                  <Clock iso={session.startUtc} timeZone={timeZone} hour12={hour12} size="row" className={clsx('w-[80px] shrink-0 sm:w-[96px]', state === 'finished' && 'opacity-45')} />
                   <div className="flex min-w-0 flex-1 flex-col">
                     <span className="flex items-center gap-2">
                       <span className={state === 'finished' ? 'text-[15px] font-[560] text-ink-3' : 'text-[15px] font-[600]'}>{session.label}</span>

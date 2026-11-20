@@ -138,7 +138,7 @@ export function SettingsPage() {
           <select
             value={isOverride ? timeZone : ''}
             onChange={(e) => prefs.setTimeZone(e.target.value || null)}
-            className="h-10 max-w-[320px] rounded-full border border-edge bg-surface px-4 text-[14px] text-ink outline-none hover:border-ink-3 focus:border-gold"
+            className="h-10 max-w-[min(320px,100%)] rounded-full border border-edge bg-surface px-4 text-[14px] text-ink outline-none hover:border-ink-3 focus:border-gold"
           >
             <option value="">Follow this computer ({zoneCity(deviceTimeZone())})</option>
             {zones.map((z) => (
