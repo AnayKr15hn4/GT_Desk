@@ -49,6 +49,10 @@
   --scrim-bottom: linear-gradient(0deg, var(--canvas) 0%, rgba(11, 18, 32, 0) 100%);
   --scrim-corner: radial-gradient(120% 85% at 0% 0%, rgba(7, 12, 23, 0.94) 0%, rgba(7, 12, 23, 0.66) 34%, rgba(7, 12, 23, 0) 62%);
   --sunray: rgba(255, 255, 255, 0.022);
+  /* Midnight's line work: porcelain blue, lightened for the night; a driver's red and white. */
+  --delft-night: #9db1ee;
+  --delft-red: #ff4b3e;
+  --delft-white: #eef1f8;
 }
 
 [data-theme='porcelain'] {
@@ -415,7 +419,7 @@ dialog.gt-dialog[open]::backdrop {
   outline: none;
 }
 
-/* Delft line work (Porcelain only): hairline cobalt strokes, never in the way of anything. */
+/* Delft line work: hairline cobalt strokes in Porcelain (pale blue in Midnight), never in the way of anything. */
 .delft {
   color: var(--delft);
   overflow: visible;
@@ -437,6 +441,16 @@ dialog.gt-dialog[open]::backdrop {
 .delft .delft-fine {
   stroke-width: var(--delft-fine, 0.75);
   stroke-opacity: 0.42;
+}
+.delft.delft-night {
+  color: var(--delft-night);
+}
+/* A scene traced in its subject's own colours. */
+.delft .delft-ink-red {
+  stroke: var(--delft-red);
+}
+.delft .delft-ink-white {
+  stroke: var(--delft-white);
 }
 
 /* The hero's Delft art: one piece at a time, painted on the light at the left. */

@@ -118,8 +118,8 @@ export function Hero({ item, seasonPoints, loading }: { item?: ScheduleItem; sea
       </div>
       <div className="pointer-events-none absolute inset-0" style={{ background: 'var(--scrim)' }} />
       <div className="pointer-events-none absolute inset-x-0 bottom-0 h-64" style={{ background: 'var(--scrim-bottom)' }} />
-      {/* Porcelain only: Delft line work painted on the light at the left, fading out to the right.
-          Each sport's traced scene (F1: the winner on the car; UFC: the champion) takes turns with the flowers. */}
+      {/* Line work painted at the left, fading out to the right: Delft blue flowers in Porcelain, birds
+          in Midnight, each taking turns with the sport's traced scene on an F1 weekend. */}
       {item ? (
         <div className="delft-hero-fade pointer-events-none absolute inset-0 hidden lg:block">
           <DelftHeroArt key={item.event.sport} sport={item.event.sport} ready={landed} waitMs={350} />

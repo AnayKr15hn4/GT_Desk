@@ -10,6 +10,8 @@ export interface Stroke {
   d: string;
   /** line: stems and outlines. fine: veins and dots. */
   tone: 'line' | 'fine';
+  /** In a scene traced in its subject's own colours, the colour of what the line runs over. */
+  ink?: string;
   /** When the stroke starts, ms. */
   delay: number;
   /** How long it takes, ms; by its length when left out. */
