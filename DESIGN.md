@@ -116,6 +116,24 @@ second shape.
   Put `data-idle-hide` on a wrapper, never on an element a GSAP intro animates: a `.from()` reads
   the element's own styles to know where to finish, and the fade there leaves it stuck halfway.
 
+## Photos and the foot of the page
+
+- **The photos close an event page the way the map opens it:** edge to edge, the full height of
+  the window. They're a row of tall panels sharing it evenly; the one you point at (or tab to)
+  opens to five times the width, lights up and shows its set, caption and credit, and the
+  others sit back in the dark. Each set names itself up the side of its first panel. Clicking
+  the open panel shows the whole photo. On a narrow window the panels become bands, one above
+  the other, and the title moves above them.
+- **The footer** is a screen of its own on the deepest tone of the canvas: a big light line
+  ("Sleep easy. We'll call you.") with the two main actions as outlined pills, the pages listed
+  large on the right, and "GameTime" set huge across the bottom, past the page's margins to 8 px
+  from each edge of the window, as if about to run off it. It's the one place the name runs at
+  normal width (heavy, tight), so it stands as tall as the window's width allows. Its font size is
+  the window's width over the word's measured width (`WORDMARK_WIDTH` in `Footer.tsx`); change its
+  type and measure again. Under it, one line of small print:
+  the year, where the data comes from (each linked), that it isn't affiliated, and a theme chip
+  that steps through the themes. No gold: nothing in it needs attention.
+
 ## Copy
 
 Same rules as the phone: buttons say what happens ("Set wake-up call"), errors say what happened

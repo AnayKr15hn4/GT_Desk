@@ -1,6 +1,7 @@
 import clsx from 'clsx';
 import type { ReactNode } from 'react';
 
+import { Button } from './Button';
 import { Icon, type IconName } from './Icon';
 
 /** A key cap, for shortcut hints. */
@@ -67,6 +68,32 @@ export function EmptyState({ icon, title, children, action }: { icon: IconName; 
         {children ? <div className="max-w-[56ch] text-[14.5px] leading-relaxed text-ink-2">{children}</div> : null}
       </div>
       {action}
+    </div>
+  );
+}
+
+/** A link out of the app, in a new tab. */
+export function ExternalLink({ href, children, className }: { href: string; children: ReactNode; className?: string }) {
+  return (
+    <a
+      href={href}
+      target="_blank"
+      rel="noreferrer"
+      className={clsx('underline decoration-[color-mix(in_srgb,currentColor_35%,transparent)] underline-offset-[3px] transition-colors hover:text-ink hover:decoration-current', className)}
+    >
+      {children}
+    </a>
+  );
+}
+
+/** Something that didn't load, said plainly, with a way to try again. */
+export function LoadError({ children, onRetry }: { children: ReactNode; onRetry: () => void }) {
+  return (
+    <div className="flex flex-wrap items-center justify-between gap-4 rounded-[20px] border border-dashed border-edge px-6 py-5">
+      <p className="text-[14.5px] text-ink-2">{children}</p>
+      <Button size="sm" icon="rotate" onClick={onRetry}>
+        Try again
+      </Button>
     </div>
   );
 }

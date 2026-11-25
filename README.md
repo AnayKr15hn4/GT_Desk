@@ -35,7 +35,7 @@ web app manifest in `public/`.
 | Page | What's on it |
 |---|---|
 | **Up next** | The next session's venue in 3D, flown into from space on first open. Its start in your time in dial numerals, the venue's own clock, a rolling countdown, and **Set wake-up call**. Below: **Your week**, a chronograph of the next seven days on your clock with your night shaded, then **Coming up** with what you follow beside it. |
-| **Event** | The venue in interactive 3D (drag to turn, Ctrl or ⌘ + scroll to zoom). F1: the racing line glows gold and a car laps it; the circuit drawn north up; race-day weather hour by hour. UFC: the arena's own building in gold; the fight card. Every session in your time and the venue's, and the start "three ways" (you, the venue, UTC). |
+| **Event** | The venue in interactive 3D (drag to turn, Ctrl or ⌘ + scroll to zoom). F1: the racing line glows gold and a car laps it; the circuit drawn north up; race-day weather hour by hour. UFC: the arena's own building in gold; the fight card. Every session in your time and the venue's, and the start "three ways" (you, the venue, UTC). Then the background: for a Grand Prix, a short read of who wins there, the race's story and every winner; for a fight night, the fighters' stories and numbers. Last, photos filling the window as tall panels, evenly shared until you point at one: for a Grand Prix two each of cars on track, the circuit and its town; for a fight night, three each of the arena and its city. Each is credited, and opens larger. |
 | **Season** | A turning night globe with a gold point at every venue still to come. Point at an event in the list to fly there. |
 | **Alarms** | The next wake-up on the dial, every alarm with its ring time, lead time you can change in place, cancel with undo, restore, remove. |
 | **Settings** | Account and phone number, **Your night** on a 24-hour dial you drag, time zone, 12/24-hour clock, temperature, sports and sessions, default lead time, **Chime on this computer**, theme (Midnight or Porcelain), map orbit. |
@@ -85,6 +85,15 @@ All keyless and open:
   Lookups are cached in the browser. When the map has no building at the spot, a dashed gold
   ring marks it; when the arena can't be found at all, the map shows the city and says so.
 - **Weather:** [Open-Meteo](https://open-meteo.com) (CC BY 4.0).
+- **An event's background:** who has won at a circuit from the [Jolpica](https://jolpi.ca) Formula 1
+  archive; a race's story and the fighters' from Wikipedia (CC BY-SA 4.0, credited where shown);
+  photos from Wikimedia Commons, freely licensed only and each credited to its author
+  (`src/data/history.ts`). A Grand Prix's photos come in three sets: cars filed under the race's
+  own years; the circuit from its Wikipedia article and its Commons category (only photos that say
+  they show the track: an aerial view, a corner, a grandstand); and the town from the top of its
+  Wikipedia article (its skyline and landmarks), found near the venue when its name is shared.
+  A fight night's come in two: the arena (found under any name it has had, from its article and
+  its Commons category, without concerts, games or the people at them) and its city, as above.
 
 ## Built with
 
@@ -106,9 +115,10 @@ src/
   app/          App, router, shell, theme, smooth scroll, keyboard shortcuts, the chime
   pages/        Up next, Event, Season, Alarms, Settings
   components/
+    shell/      the top bar and the footer
     map/        VenueMap (MapLibre), its style, how to frame each venue
     schedule/   Hero, week chronograph, Coming up, follow panel, alarm button
-    event/      circuit drawing, weather, fight card
+    event/      circuit drawing, weather, fight card, history, fighters, photos
     dialogs/    sign in, wake-up call, phone, Premium, search, shortcuts
     settings/   the night dial, the chime switch
     ui/         buttons, pills, clocks, dialogs, rows, icons, toasts

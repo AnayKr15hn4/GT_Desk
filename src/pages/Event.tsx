@@ -9,6 +9,9 @@ import { useResolvedTheme } from '@/app/theme';
 import { DelftDivider } from '@/components/delft/Delft';
 import { CircuitOutline } from '@/components/event/CircuitOutline';
 import { FightCard } from '@/components/event/FightCard';
+import { FighterBackgrounds } from '@/components/event/Fighters';
+import { EventPhotos } from '@/components/event/Gallery';
+import { RaceHistory } from '@/components/event/History';
 import { WeatherReading } from '@/components/event/Weather';
 import { WeatherStrip } from '@/components/event/WeatherStrip';
 import { useVenueView } from '@/components/map/useVenueView';
@@ -211,7 +214,13 @@ function EventView({ event }: { event: SportEvent }) {
             <FightCard bouts={event.bouts ?? []} />
           </section>
         )}
+
+        {/* The background: the race's history, or the fighters' stories. */}
+        {event.sport === 'f1' ? <RaceHistory event={event} /> : <FighterBackgrounds event={event} />}
       </div>
+
+      {/* The photos fill the window, edge to edge, to close the page as the map opens it. */}
+      <EventPhotos event={event} />
     </>
   );
 }

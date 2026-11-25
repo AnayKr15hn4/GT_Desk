@@ -129,6 +129,13 @@ const paths = {
   plus: <path d="M12 5v14M5 12h14" />,
   minus: <path d="M5 12h14" />,
   external: <path d="M14 4.5h5.5V10M19.5 4.5 11 13M18 14v4a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4" />,
+  photo: (
+    <>
+      <rect x="3.5" y="5" width="17" height="14" rx="2.5" />
+      <circle cx="9" cy="10" r="1.6" />
+      <path d="m3.5 16.5 4.6-4.1 3.4 3 3.2-3.1 5.8 5.2" />
+    </>
+  ),
 } as const;
 
 export type IconName = keyof typeof paths;

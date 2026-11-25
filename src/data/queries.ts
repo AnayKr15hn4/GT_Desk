@@ -14,6 +14,7 @@ import {
   updateAlarmLead,
 } from './api';
 import { circuitForEvent, fetchCircuits, fetchFootprint, fetchForecast, locateArena, type ArenaPlace } from './external';
+import { cardFighters, fetchF1History, fetchFighterProfiles, fetchGallery, gallerySources } from './history';
 import { useSession } from '@/stores/session';
 import type { Alarm, AlertType, Sport, SportEvent } from '@/lib/types';
 
@@ -164,6 +165,53 @@ export function useFootprint(place: ArenaPlace | null | undefined) {
     enabled: !!osm && osm.type !== 'N',
     staleTime: Infinity,
     gcTime: Infinity,
+    retry: 1,
+  });
+}
+
+// ── The background on an event page ────────────────────────────
+
+const DAY = 24 * 60 * 60_000;
+
+/** A Grand Prix's history: its circuit, every winner there and the race's story. */
+export function useF1History(event: SportEvent) {
+  return useQuery({
+    queryKey: ['history', event.id],
+    queryFn: ({ signal }) => fetchF1History(event, signal),
+    enabled: event.sport === 'f1',
+    staleTime: DAY,
+    retry: 1,
+  });
+}
+
+/** The card's fighters' backgrounds (asked for again when the card changes). */
+export function useFighterProfiles(event: SportEvent) {
+  const names = cardFighters(event)
+    .map((f) => f.fighter.name)
+    .join('|');
+  return useQuery({
+    queryKey: ['fighters', event.id, names],
+    queryFn: ({ signal }) => fetchFighterProfiles(event, signal),
+    enabled: event.sport === 'ufc',
+    staleTime: DAY,
+    retry: 1,
+  });
+}
+
+/**
+ * Photos of the event. A Grand Prix's wait for its history and a fight night's for its fighters'
+ * profiles: they say where to look.
+ */
+export function useEventPhotos(event: SportEvent) {
+  // A Grand Prix's photos need its history (its years, its circuit's article); a fight night's, only its arena.
+  const history = useF1History(event);
+  const waiting = event.sport === 'f1' && history.isPending;
+  const sources = useMemo(() => (waiting ? null : gallerySources(event, history.data)), [waiting, event, history.data]);
+  return useQuery({
+    queryKey: ['photos', sources],
+    queryFn: ({ signal }) => fetchGallery(sources!, signal),
+    enabled: sources !== null,
+    staleTime: DAY,
     retry: 1,
   });
 }

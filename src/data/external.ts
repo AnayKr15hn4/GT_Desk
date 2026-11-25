@@ -132,6 +132,9 @@ const ALIASES: Record<string, string[]> = {
   'abha arena': ['Ali Bin Hamad Al Attiya Arena', 'Ali Bin Hamad Al-Attiyah Arena'],
 };
 
+/** The other names an arena goes by (renamed for a new sponsor), for looking it up. */
+export const venueAliases = (name: string): string[] => ALIASES[fold(name)] ?? [];
+
 const GENERIC = new Set(['arena', 'stadium', 'center', 'centre', 'the', 'hall', 'dome', 'park', 'garden', 'gardens', 'at']);
 
 const tokens = (s: string) =>
@@ -252,7 +255,7 @@ export async function locateArena(venue: SportEvent['venue'], signal?: AbortSign
   const city: LngLat = [venue.lon, venue.lat];
   const pad = 0.4;
   const bbox = [city[0] - pad, city[1] - pad, city[0] + pad, city[1] + pad].map((v) => v.toFixed(4)).join(',');
-  const names = [venue.name, ...(ALIASES[fold(venue.name)] ?? [])];
+  const names = [venue.name, ...venueAliases(venue.name)];
 
   // A search that failed (rather than found nothing) means the answer below is only for now.
   let searchFailed = false;

@@ -8,6 +8,7 @@ import { PremiumDialog } from '@/components/dialogs/PremiumDialog';
 import { SetAlarmDialog } from '@/components/dialogs/SetAlarmDialog';
 import { ShortcutsDialog } from '@/components/dialogs/ShortcutsDialog';
 import { SignInDialog } from '@/components/dialogs/SignInDialog';
+import { Footer } from '@/components/shell/Footer';
 import { TopBar } from '@/components/shell/TopBar';
 import { Toaster } from '@/components/ui/Toast';
 import { useSchedule } from '@/hooks/use-schedule';
@@ -48,6 +49,7 @@ export function Shell() {
       >
         <Outlet />
       </motion.main>
+      <Footer onSetNext={next ? setNext : undefined} />
       <Toaster />
       <SignInDialog />
       <SetAlarmDialog />

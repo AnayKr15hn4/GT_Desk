@@ -21,12 +21,14 @@ git push -q origin main
 echo "GT_Desk: pushed"
 
 # The team copy: same files under apps/desktop (its lockfile lives at the workspace root).
+# CLAUDE.md, HANDOFF.md and .claude/ are notes for working on GT_Desk, so they stay out of it.
 if [ ! -d "$TEAM/.git" ] && [ ! -f "$TEAM/.git" ]; then
   echo "Team repo not found at $TEAM; skipped"
   exit 0
 fi
 rsync_like() {
-  tar --exclude=node_modules --exclude=dist --exclude='*.local' --exclude=.git --exclude=package-lock.json -cf - . |
+  tar --exclude=node_modules --exclude=dist --exclude='*.local' --exclude=.git --exclude=package-lock.json \
+    --exclude=.claude --exclude=CLAUDE.md --exclude=HANDOFF.md -cf - . |
     (cd "$TEAM/apps/desktop" && tar -xf -)
 }
 rsync_like
