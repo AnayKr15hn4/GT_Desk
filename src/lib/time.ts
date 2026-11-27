@@ -5,8 +5,8 @@ import { formatInTimeZone } from 'date-fns-tz';
  * explicitly so the same code renders your time and the venue's time, and stays testable.
  */
 
-export const MINUTE = 60_000;
-export const HOUR = 60 * MINUTE;
+const MINUTE = 60_000;
+const HOUR = 60 * MINUTE;
 export const DAY = 24 * HOUR;
 
 export interface ClockParts {
@@ -53,16 +53,6 @@ export function formatDayLabel(iso: string, timeZone: string, now: Date = new Da
 /** "Sunday, November 22". */
 export function formatLongDate(iso: string, timeZone: string): string {
   return formatInTimeZone(iso, timeZone, 'EEEE, MMMM d');
-}
-
-export function formatShortDate(iso: string, timeZone: string): string {
-  return formatInTimeZone(iso, timeZone, 'EEE, MMM d');
-}
-
-/** Local wall-clock hour as a fraction, e.g. 1.5 for 1:30. */
-export function localHour(iso: string, timeZone: string): number {
-  const [h, m] = formatInTimeZone(iso, timeZone, 'H:m').split(':').map(Number);
-  return h + m / 60;
 }
 
 /** Minutes after local midnight, e.g. 90 for 1:30 AM. */
@@ -155,7 +145,7 @@ export function formatCountdown(c: Countdown): string {
   return `${c.minutes}m ${pad(c.seconds)}s`;
 }
 
-/** "In 2 days", "In 5 hours", "In 12 minutes", "Now". A calm, rounded reading. */
+/** "In 2 days", "In 5 hr", "In 12 min", "Now". A calm, rounded reading. */
 export function formatRelative(targetIso: string, now: Date = new Date()): string {
   const ms = Date.parse(targetIso) - now.getTime();
   if (ms <= 0) return 'Now';
@@ -201,28 +191,6 @@ export function formatUtcOffset(minutes: number): string {
 export function zoneCity(timeZone: string): string {
   const last = timeZone.split('/').pop() ?? timeZone;
   return last.replace(/_/g, ' ');
-}
-
-export function isValidTimeZone(timeZone: string): boolean {
-  try {
-    formatInTimeZone(new Date(0), timeZone, 'H');
-    return true;
-  } catch {
-    return false;
-  }
-}
-
-const COUNTRY_SHORT: Record<string, string> = {
-  'united arab emirates': 'UAE',
-  'united kingdom': 'UK',
-  'great britain': 'UK',
-  'united states': 'USA',
-  'united states of america': 'USA',
-};
-
-export function shortCountry(country: string): string {
-  const name = country.trim();
-  return COUNTRY_SHORT[name.toLowerCase()] ?? name;
 }
 
 /** "9:00 PM in Las Vegas": the venue's own clock, quietly. Just the city when its zone is unknown. */

@@ -1,11 +1,9 @@
-import { alertTimeUtc } from './time';
 import type { Alarm, AlarmStatus, AlertType } from './types';
 
 /** Free plan: push reminders only, two at a time. Premium unlocks calls and removes the cap. */
 export const FREE_ACTIVE_ALARM_LIMIT = 2;
 
 export const leadTimeOptions = [0, 5, 10, 15, 30, 60] as const;
-export const MAX_CUSTOM_LEAD = 180;
 
 export type AlarmGate =
   | { kind: 'sign-in' }
@@ -61,10 +59,6 @@ export function nextAlarm(alarms: readonly Alarm[], now: Date): Alarm | undefine
   return alarms
     .filter((a) => isActive(a, now))
     .sort((a, b) => Date.parse(a.alertTimeUtc) - Date.parse(b.alertTimeUtc))[0];
-}
-
-export function ringTime(sessionStartUtc: string, leadMinutes: number): string {
-  return alertTimeUtc(sessionStartUtc, leadMinutes);
 }
 
 /** Sessions read without "the": "before qualifying", "before practice 2". */

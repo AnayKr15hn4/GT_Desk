@@ -8,6 +8,8 @@ import { FORECAST_DAYS } from '@/lib/weather';
  * - Open-Meteo for venue weather (CC BY 4.0, free for non-commercial use).
  * - bacinger/f1-circuits for racing lines (MIT), via jsDelivr.
  * - Photon (komoot, OpenStreetMap data) to place arenas precisely; the backend only knows the city.
+ * - Wikidata, for the arenas Photon doesn't find by name.
+ * - The OpenStreetMap API, for an arena's exact outline.
  */
 
 async function getJson<T>(url: string, signal?: AbortSignal): Promise<T> {

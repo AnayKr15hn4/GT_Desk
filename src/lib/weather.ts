@@ -59,7 +59,7 @@ export function isWithinForecastHorizon(startUtc: string, now: Date = new Date()
 
 export type TemperatureUnit = 'celsius' | 'fahrenheit';
 
-export function toUnit(celsius: number, unit: TemperatureUnit): number {
+function toUnit(celsius: number, unit: TemperatureUnit): number {
   return unit === 'fahrenheit' ? celsius * (9 / 5) + 32 : celsius;
 }
 

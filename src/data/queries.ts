@@ -13,7 +13,7 @@ import {
   sendPhoneCode,
   updateAlarmLead,
 } from './api';
-import { circuitForEvent, fetchCircuits, fetchFootprint, fetchForecast, locateArena, type ArenaPlace } from './external';
+import { fetchCircuits, fetchFootprint, fetchForecast, locateArena, type ArenaPlace } from './external';
 import { cardFighters, fetchF1History, fetchFighterProfiles, fetchGallery, gallerySources } from './history';
 import { useSession } from '@/stores/session';
 import type { Alarm, AlertType, Sport, SportEvent } from '@/lib/types';
@@ -140,11 +140,6 @@ export function useCircuits() {
   return useQuery({ queryKey: ['circuits'], queryFn: ({ signal }) => fetchCircuits(signal), staleTime: Infinity, gcTime: Infinity });
 }
 
-export function useCircuit(event: SportEvent | undefined) {
-  const circuits = useCircuits();
-  return useMemo(() => (event ? circuitForEvent(event, circuits.data) : null), [event, circuits.data]);
-}
-
 export function useArena(event: SportEvent | undefined) {
   const indoor = !!event && event.sport !== 'f1';
   return useQuery({
@@ -199,11 +194,10 @@ export function useFighterProfiles(event: SportEvent) {
 }
 
 /**
- * Photos of the event. A Grand Prix's wait for its history and a fight night's for its fighters'
- * profiles: they say where to look.
+ * Photos of the event. A Grand Prix's wait for its history, which says where to look (its years,
+ * its circuit's article); a fight night's need only its arena and its city.
  */
 export function useEventPhotos(event: SportEvent) {
-  // A Grand Prix's photos need its history (its years, its circuit's article); a fight night's, only its arena.
   const history = useF1History(event);
   const waiting = event.sport === 'f1' && history.isPending;
   const sources = useMemo(() => (waiting ? null : gallerySources(event, history.data)), [waiting, event, history.data]);

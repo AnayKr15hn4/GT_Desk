@@ -15,7 +15,7 @@ export class AppError extends Error {
  * The backend's short error codes (raised by the Postgres functions and Edge Functions), in the
  * words the app shows. Mirrors errorMessages in the phone app's services/supabase/client.ts.
  */
-export const errorMessages: Record<string, string> = {
+const errorMessages: Record<string, string> = {
   not_signed_in: 'Sign in first.',
   not_found: 'That alarm is gone. It may have been removed on another device.',
   session_not_found: 'That session is no longer on the schedule.',

@@ -37,7 +37,7 @@ const stroke = (map: Map, points: Pt[], tone: Stroke['tone'], delay: number, dur
 });
 
 /** A flower from the front: rounded petals, a ring, a heart, a vein in each petal. */
-export function rosette(map: Map, cx: number, cy: number, r: number, petals: number, t: number): Stroke[] {
+function rosette(map: Map, cx: number, cy: number, r: number, petals: number, t: number): Stroke[] {
   const strokes: Stroke[] = [
     stroke(map, scallops(cx, cy, r * 0.56, r, petals), 'line', t, 900, true),
     stroke(map, ring(cx, cy, r * 0.36), 'line', t + 380, 500, true),
@@ -87,7 +87,7 @@ function dots(map: Map, near: Pt, angle: number, distance: number, t: number): S
   ].map((p, i) => stroke(map, ring(p[0], p[1], 0.85, 8), 'fine', t + i * 110, 220, true));
 }
 
-export interface VineSpec {
+interface VineSpec {
   /** The stem's shape, root first. */
   stem: Pt[];
   seed: number;
@@ -111,7 +111,7 @@ export interface VineSpec {
  * A vine: the stem grows from its root, and as the tip passes, leaves open on alternate sides,
  * tendrils curl, now and then three dots; a side branch with its own flower; a flower at the tip.
  */
-export function vine({ stem, seed, start = 0, bloom = 7, size = 1, branch = true, spacing = 1, end = 'bud', map = same }: VineSpec): Stroke[] {
+function vine({ stem, seed, start = 0, bloom = 7, size = 1, branch = true, spacing = 1, end = 'bud', map = same }: VineSpec): Stroke[] {
   const rand = random(seed);
   const walk = walker(sampleSmooth(stem, 18));
   const growMs = walk.length * GROW_MS;

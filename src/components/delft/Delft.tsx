@@ -197,7 +197,7 @@ function useTracedScene(entry: SceneEntry | undefined): Scene | null {
 }
 
 type Piece = 'scene' | 'first' | 'second';
-/** A weekend with a scene takes turns: the sport, a piece, the sport, the other piece. */
+/** A weekend with a scene takes turns: a piece, the sport's scene, the other piece, the scene again. */
 const THEMED: Piece[] = ['first', 'scene', 'second', 'scene'];
 const PIECES: Piece[] = ['first', 'second'];
 const HOLD_MS = 18_000;
@@ -225,8 +225,7 @@ export function DelftHeroArt({ sport, ready = true, waitMs = 0 }: { sport: Sport
   const playlist = entry ? THEMED : PIECES;
   let piece = playlist[turn % playlist.length];
   if (piece === 'scene' && !scene) {
-    // Not loaded yet: the first turn waits for it; a later one shows a piece instead.
-    if (turn === 0) return null;
+    // Not loaded yet: a piece takes its turn instead.
     piece = turn % 4 === 1 ? 'second' : 'first';
   }
   const wait = turn === 0 ? waitMs : 0;

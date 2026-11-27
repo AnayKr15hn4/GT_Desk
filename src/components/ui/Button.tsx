@@ -3,7 +3,7 @@ import { forwardRef, type ButtonHTMLAttributes, type ReactNode } from 'react';
 
 import { Icon, type IconName } from './Icon';
 
-type Variant = 'primary' | 'secondary' | 'glass' | 'ghost' | 'quiet-danger';
+type Variant = 'primary' | 'secondary' | 'ghost' | 'quiet-danger';
 type Size = 'sm' | 'md' | 'lg';
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
@@ -18,7 +18,6 @@ const variants: Record<Variant, string> = {
   // One per screen: the action that matters.
   primary: 'bg-primary text-on-primary shadow-[inset_0_1px_0_rgba(255,255,255,0.3)] hover:brightness-[1.08] disabled:opacity-45',
   secondary: 'bg-raised text-ink border border-edge hover:bg-pressed disabled:opacity-45',
-  glass: 'glass text-ink hover:bg-glass-strong disabled:opacity-45 !shadow-none',
   ghost: 'text-ink-2 hover:text-ink hover:bg-raised disabled:opacity-40',
   'quiet-danger': 'text-danger hover:bg-raised disabled:opacity-40',
 };
@@ -79,7 +78,7 @@ export function IconButton({
   );
 }
 
-export function Spinner({ size = 16 }: { size?: number }) {
+function Spinner({ size = 16 }: { size?: number }) {
   return (
     <svg width={size} height={size} viewBox="0 0 24 24" className="animate-spin" aria-hidden>
       <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" strokeOpacity="0.25" strokeWidth="2.5" />

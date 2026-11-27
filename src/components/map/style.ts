@@ -93,7 +93,7 @@ const palettes: Record<MapTheme, Palette> = {
   },
 };
 
-export const OPENFREEMAP_ATTRIBUTION =
+const OPENFREEMAP_ATTRIBUTION =
   '<a href="https://openfreemap.org" target="_blank" rel="noreferrer">OpenFreeMap</a> <a href="https://www.openmaptiles.org/" target="_blank" rel="noreferrer">© OpenMapTiles</a> Data from <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a>';
 
 export interface StyleInput {
@@ -106,8 +106,6 @@ export interface StyleInput {
   venueRing?: LngLat[];
   /** Gold points for the season's venues, visible from space. */
   seasonPoints?: { lngLat: LngLat; id: string }[];
-  /** Where the "car" is on its lap, if it laps. */
-  car?: LngLat | null;
   /** The venue itself, as a soft gold pulse at low zoom. */
   venue?: LngLat;
 }
@@ -146,12 +144,8 @@ export function buildStyle(input: StyleInput): StyleSpecification {
         })),
       },
     },
-    car: {
-      type: 'geojson',
-      data: input.car
-        ? { type: 'Feature', properties: {}, geometry: { type: 'Point', coordinates: input.car } }
-        : { type: 'FeatureCollection', features: [] },
-    },
+    // Starts empty: VenueMap moves the car along its lap with setData.
+    car: { type: 'geojson', data: { type: 'FeatureCollection', features: [] } },
     venue: {
       type: 'geojson',
       data: input.venue

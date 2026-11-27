@@ -28,7 +28,6 @@ export function place(points: readonly Pt[], { x = 0, y = 0, rotate = 0, scale =
   });
 }
 
-
 /** A smooth curve through the points (Catmull-Rom, written as cubic Béziers). */
 export function smooth(points: readonly Pt[], closed = false): string {
   const n = points.length;
@@ -49,7 +48,6 @@ export function smooth(points: readonly Pt[], closed = false): string {
   }
   return closed ? `${d}Z` : d;
 }
-
 
 /** Evenly spaced samples of t in [0, 1]. */
 export function steps(count: number): number[] {

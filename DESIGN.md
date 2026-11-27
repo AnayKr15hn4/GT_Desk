@@ -29,7 +29,7 @@ start three ways (you, the venue, UTC).
 | gold (accent) | `#D4B67A` | `#7F6127` (UI), `#B8913F` (map material) |
 | primary button | gold | ink |
 | dial | `#2A3D66 → #16233D → #0E1729`, with a sunray finish | `#FFFFFF → #F1F3F6 → #E5E8EE` |
-| Delft line work | none | `#23439A` (cobalt), hairlines only |
+| Delft line work | `#9DB1EE` (pale blue); `#FF4B3E` and `#EEF1F8` for Leclerc's red and white | `#23439A` (cobalt), hairlines only |
 
 Map palettes live in `src/components/map/style.ts`; the gold on the map is a material, so on
 Porcelain it is brighter than the gold used for text.
@@ -60,38 +60,45 @@ Shadows stay neutral. Glass appears only where something really floats over movi
 over a live map it's "still glass" (`glass-still`): the same tint and edge without the blur, which
 would otherwise be worked out again every frame the map moves.
 
-## Delft line work (Porcelain only)
+## Delft line work
 
 Porcelain borrows from Delftware's blue painting, as thin cobalt lines and nothing else: no plates,
 no fills, no patterns behind text. A vine grows from its root, leaves open off it on alternate
 sides, tendrils curl, three dots now and then, a small rosette at the tip
 (`src/components/delft/`). It holds for a while, fades the way it grew, and grows again in a
-second shape.
+second shape. Midnight has line work too, but only in the hero, in its own colours.
 
 - **Where:** beside the big titles on Settings, Alarms and the not-found and error pages, in the
   empty space to the right; and as a divider (a rosette with a vine growing out each side) between
-  the week and the list on Up next, and between the times and the venue on an event page.
-- **The hero flower:** on Up next, a large rose (then a peony) is painted on the light at the left
-  of the hero, cropped by the edge, its stem down the margin beside the dial card, a bud above the
-  headline and a leafy tendril running out into the map. It fades out with the light, a little
-  after it (a mask from 38% to 72% of the width), sits fainter than the other line work because
-  it's behind the headline, and keeps out of the small lines of text. Wide windows only.
-- **A scene per sport:** each sport has a traced line drawing (Formula 1: the winner standing on
-  the car, fists up; UFC: the champion with a belt on each shoulder, looking up), made by
-  `scripts/trace-line-art.py` from a coloring-page drawing with its lettering and logos left out,
-  and painted outward from the face. On that sport's weekend the hero takes turns: the scene, the
-  rose, the scene again, the peony; each painted, held and lifted before the next, and the first
-  starts as the camera lands. Each sits against the left edge (nothing looks cut off when the
-  dial card lifts away on scroll) and fades out across its own right side before its edge. The
-  fighter is set a little to the right so his face clears the headline, turned toward the arena,
-  with slightly stronger lines because he sits over the map. Each tracing is its own small file,
-  loaded only on its sport's weekend. Adding a sport: a preset in the script and an entry in
-  `SCENES` (`src/components/delft/Delft.tsx`).
+  the week and the list on Up next, and between the times and the venue on an event page. These
+  vines and dividers are Porcelain's only.
+- **Porcelain's hero flowers:** on Up next, a large rose (then a peony) is painted on the light at
+  the left of the hero, cropped by the edge, its stem down the margin beside the dial card, a bud
+  above the headline and a leafy tendril running out into the map. It sits fainter than the other
+  line work because it's behind the headline, and keeps out of the small lines of text.
+- **Midnight's hero pieces:** a blue jay taking off (its head a little in from the left edge, its
+  wings spread across to the map) and a hummingbird at ocotillo flowers (mirrored, so the flowers
+  reach in from the left), both in one pale blue, with slightly stronger lines than Porcelain's.
+- **A scene for Formula 1:** on an F1 weekend the two hero pieces take turns with a traced scene:
+  a piece, the scene, the other piece, the scene again. Porcelain's scene is the winner standing
+  on the car, fists up, in Delft blue. Midnight's is Charles Leclerc pulling on his gloves, set a
+  little in from the left edge, each line red or white as his suit and helmet are in the photo
+  the drawing was made from. UFC weekends have no scene: Porcelain shows its flowers and Midnight
+  its birds. (`traced/champion.ts`, the champion with his belts, is kept but not shown.)
+- **Traced pieces:** `scripts/trace-line-art.py` turns a coloring-page drawing into strokes, with
+  its lettering and logos left out, painted outward from the head. Each tracing is its own small
+  file, loaded only when it's shown. Adding a scene: a preset in the script and an entry in
+  `SCENES` or `NIGHT_SCENES` (`src/components/delft/Delft.tsx`).
+- **In the hero:** one piece at a time, each painted, held and lifted before the next, and the
+  first starts as the camera lands. Each sits against the left edge or a little in from it
+  (nothing looks cut off when the dial card lifts away on scroll) and fades out across its own
+  right side before its edge. Wide windows only.
 - Never on the map itself, and never over a control.
 - **How it reads:** strokes are 1.1 px outlines at about two-thirds strength, 0.75 px veins and
   dots fainter still, so they sit back from the ink.
-- **Motion:** each stroke starts as the growing tip reaches it (Anime.js drawables on one looping
-  timeline); off screen it waits. With reduced motion it's simply drawn, and Midnight has none.
+- **Motion:** each stroke starts as the growing tip reaches it (Anime.js drawables on one
+  timeline). The vines and dividers go round for ever; each hero piece plays once and hands over
+  to the next. Off screen it waits. With reduced motion it's simply drawn.
 
 ## Motion
 
@@ -99,8 +106,8 @@ second shape.
   venue while the headline rises line by line (GSAP SplitText) and the buildings grow out of the
   ground.
 - **Ambient, slow, stoppable.** The map orbits the venue at 2.4° a second, and a car laps the
-  circuit; both stop the moment you touch the map and resume a few seconds later. Settings can
-  turn the orbit off.
+  circuit; the orbit stops the moment you touch the map and resumes a few seconds later. Settings
+  can turn the orbit off.
 - **Motion that answers you.** The nav mark and pill selections slide (Motion); the countdown
   rolls only the digits that change; dialogs rise in; the week's sessions fill in once when you
   first scroll to them (Anime.js); the circuit draws itself in gold (Anime.js SVG); setting an

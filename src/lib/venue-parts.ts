@@ -67,7 +67,7 @@ export function ringCentroid(ring: readonly LngLat[]): LngLat {
   return [x0 + cx / (3 * a), y0 + cy / (3 * a)];
 }
 
-export function pointInRing([x, y]: LngLat, ring: readonly LngLat[]): boolean {
+function pointInRing([x, y]: LngLat, ring: readonly LngLat[]): boolean {
   let inside = false;
   for (let i = 0, j = ring.length - 1; i < ring.length; j = i++) {
     const [xi, yi] = ring[i];

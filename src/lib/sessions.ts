@@ -1,4 +1,3 @@
-import { fold } from './text';
 import type { SessionKind, Sport } from './types';
 
 export const sports: readonly Sport[] = ['f1', 'ufc'];
@@ -43,7 +42,7 @@ export const sessionDurationMinutes: Record<SessionKind, number> = {
 };
 
 /** The main event is the last fight of the main card, so the main card always comes with it. */
-export const sessionRequires: Partial<Record<SessionKind, SessionKind>> = { main_card: 'main_event' };
+const sessionRequires: Partial<Record<SessionKind, SessionKind>> = { main_card: 'main_event' };
 
 export function toggleKind(current: readonly SessionKind[], kind: SessionKind, available: readonly SessionKind[]): SessionKind[] {
   if (current.includes(kind)) return current.filter((k) => k !== kind && sessionRequires[k] !== kind);
@@ -80,21 +79,4 @@ export const filterPresets: Record<Sport, FilterPreset[]> = {
 
 export function orderKinds(sport: Sport, kinds: readonly SessionKind[]): SessionKind[] {
   return sessionKindsBySport[sport].filter((k) => kinds.includes(k));
-}
-
-export function summarizeKinds(sport: Sport, kinds: readonly SessionKind[]): string {
-  const ordered = orderKinds(sport, kinds);
-  if (ordered.length === 0) return 'Nothing';
-  if (ordered.length === sessionKindsBySport[sport].length) return 'All sessions';
-  return ordered.map((k) => sessionLabels[k].short).join(', ');
-}
-
-export function sportsMatching(query: string): Sport[] {
-  const words = fold(query).split(/\s+/).filter(Boolean);
-  return sports.filter((sport) => {
-    const meta = sportMeta[sport];
-    const sessions = sessionKindsBySport[sport].map((k) => sessionLabels[k].label).join(' ');
-    const text = fold(`${meta.name} ${meta.short} ${meta.keywords} ${sessions}`);
-    return words.every((w) => text.includes(w));
-  });
 }

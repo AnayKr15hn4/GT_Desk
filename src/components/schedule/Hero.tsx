@@ -29,7 +29,6 @@ import { openSetAlarm } from '@/stores/ui';
 
 gsap.registerPlugin(SplitText, ScrollTrigger);
 
-
 let introPlayed = false;
 
 export function Hero({ item, seasonPoints, loading }: { item?: ScheduleItem; seasonPoints?: { lngLat: LngLat; id: string }[]; loading?: boolean }) {

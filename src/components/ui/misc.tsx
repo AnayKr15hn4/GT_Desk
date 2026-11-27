@@ -18,11 +18,6 @@ export function Kbd({ children, className }: { children: ReactNode; className?: 
   );
 }
 
-/** The live dot breathes slowly. */
-export function LiveDot({ className }: { className?: string }) {
-  return <span className={clsx('live-dot inline-block size-2 rounded-full bg-live', className)} aria-hidden />;
-}
-
 /** Small state marks. Gold only for things that need attention (overnight, alarm set). */
 export function Tag({ tone = 'neutral', icon, children }: { tone?: 'neutral' | 'gold' | 'live'; icon?: IconName; children: ReactNode }) {
   return (

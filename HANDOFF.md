@@ -20,22 +20,22 @@ Everything about the GameTime desktop app, built 18 to 24 November 2026, so a ne
 |---|---|
 | Code | `C:\projects\Programming\gametime-desktop` (git, branch `main`) |
 | GitHub | `github.com/AnayKr15hn4/GT_Desk`, branch `main` |
-| Team copy | Team repo `AmoghRB/gametime`, folder `apps/desktop`, branch `desktop/app`. The local clone is `C:\projects\Programming\gametime-team-desktop`. No pull request is open from `desktop/app` yet (checked 24 Nov). Open one at `github.com/AmoghRB/gametime/pull/new/desktop/app` when the user wants. |
+| Team copy | Team repo `AmoghRB/gametime`, folder `apps/desktop`, branch `desktop/app`. The local clone is `C:\projects\Programming\gametime-team-desktop`. Pull request #7 merged the first version of `desktop/app` into the team's `main` on 19 Nov. The `desktop/app` commits since then (7 of them, 19 to 25 Nov, checked 27 Nov) still need a new pull request. Open one at `github.com/AmoghRB/gametime/pull/new/desktop/app` when the user wants. |
 | Live site | `https://gt-desk.vercel.app`. Vercel deploys it from GT_Desk on every push. The two Supabase values are set in Vercel as environment variables. |
 | Secrets | `.env.local` holds `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` (the publishable key). Git ignores it. Never commit it or copy its values into docs. |
 | Dev server configs | `.claude/launch.json`: `gametime-desktop` (dev, port 5180) and `gametime-desktop-preview` (the production build, port 5181; run `npm run build` first) |
 
-## Where it stands (24 November 2026)
+## Where it stands (27 November 2026)
 
-- **Last commit:** `9d2e3fc` "Midnight hero art: a blue jay, a hummingbird and Charles Leclerc" (22 Nov). GT_Desk `main` and the team's `desktop/app` both have it, and the live site deploys from it.
-- **Not committed yet:** the event background (history, fighters, photo panels) and the footer.
-  - New files: `src/data/history.ts`, `src/data/history.test.ts`, `src/components/event/History.tsx`, `Fighters.tsx`, `Gallery.tsx` and `src/components/shell/Footer.tsx`.
-  - Changed: `DESIGN.md`, `README.md`, `src/app/Shell.tsx`, `src/components/ui/Icon.tsx`, `src/components/ui/misc.tsx`, `src/data/external.ts`, `src/data/queries.ts` and `src/pages/Event.tsx`.
-  - Added for the move to a new chat: `CLAUDE.md`, this file, `.claude/launch.json`, a `.gitignore` line for Claude's local settings, and a `scripts/ship.sh` change that keeps these three out of the team copy.
-- **Checks:** typecheck, lint, all 81 tests (7 files) and the build pass on the uncommitted work.
-- **To publish it:** `bash scripts/ship.sh "Event history, fighters, photo panels and a footer"`. Only do this when the user says so.
+- **Last commit:** `c4981e5` "Event history, fighters, photo panels and a footer" (25 Nov). GT_Desk `main` and the team's `desktop/app` both have it, and the live site deploys from it.
+  - It added the event background (history, fighters, photo panels), the footer, `CLAUDE.md`, this file and `.claude/launch.json`.
+- **After it, a tidy-up (27 Nov):** no change to what the app does or how it looks.
+  - Removed unused code: helpers, a hook, a component, five icons, a button style, some CSS and the `jsdom` dev dependency.
+  - Fixed comments that no longer matched the code, and brought `DESIGN.md`, `README.md` and this file up to date.
+  - If `git status` still shows it, it isn't shipped yet: `bash scripts/ship.sh "Tidy code and docs"`. Only do this when the user says so.
+- **Checks:** typecheck, lint, all 81 tests (7 files) and the build pass.
 - **Git stashes:** two hold work that was taken out (see the line art section).
-- **Team clone:** it has an untracked `package-lock.json` at its root. ship.sh only adds `apps/desktop`, so it never gets committed.
+- **Team clone:** it had an untracked `package-lock.json` at its root (seen 24 Nov). ship.sh only adds `apps/desktop`, so it never gets committed.
 
 ## Built with
 
@@ -69,7 +69,7 @@ Everything about the GameTime desktop app, built 18 to 24 November 2026, so a ne
 - **Settings**
   - Account and phone, the night dial, time zone, 12 or 24-hour clock, temperature, sports and sessions, and the default lead time.
   - "Chime on this computer". While a GameTime tab is open, it plays a soft two-note chime and shows a notification at each ring time. It never rings twice, even with several tabs open.
-  - Theme: System, By start time, Midnight or Porcelain. "By start time" switches to Midnight when the next session starts in your night hours, and to Porcelain otherwise.
+  - Theme: Automatic (follows the computer), By start time, Midnight or Porcelain. "By start time" switches to Midnight when the next session starts in your night hours, and to Porcelain otherwise.
   - Map orbit.
 - **Search and shortcuts**
   - Ctrl K or `/` searches.
@@ -112,7 +112,7 @@ Everything about the GameTime desktop app, built 18 to 24 November 2026, so a ne
   - `stash@{0}`: lit windows on Midnight's map buildings.
   - `stash@{1}`: landmark line art for 75 cities.
 
-## Latest work: event background, photos and footer (not committed yet)
+## Latest work: event background, photos and footer (shipped 25 Nov in `c4981e5`)
 
 This is for the desktop app only. Each event page has more sections after the circuit or fight card.
 
@@ -259,14 +259,11 @@ It's on every page (`src/components/shell/Footer.tsx`, rendered in `Shell.tsx`).
 
 ## What's next
 
-1. **Ship the uncommitted work**, when the user asks.
+1. **Ship the tidy-up** if it's still uncommitted, when the user asks.
 2. **Pick the next feature.** These were offered on 24 Nov, and the user hasn't chosen yet:
    - **A pop-out countdown (the top pick):** a small always-on-top window with the next session's countdown, using the Document Picture-in-Picture API. It works in Chrome and Edge, including the installed app.
    - **Results with a spoiler shield:** results after a session, hidden until you choose to see them.
    - **"Add to calendar"** for a session.
    - **F1 standings and UFC rankings.**
    - **A full real-alarm test** from the desktop to the phone.
-3. **Fix two out-of-date docs:**
-   - DESIGN.md's Delft section still says the line work is Porcelain only, that Midnight has none, and that UFC has a traced scene. Now Midnight has the jay, the hummingbird and Leclerc, and UFC shows flowers only.
-   - README's Settings row gives the theme as "Midnight or Porcelain". There are four: System, By start time, Midnight and Porcelain.
-4. **Open the team pull request** for `desktop/app`, when the user wants.
+3. **Open a new team pull request** for the `desktop/app` commits since #7, when the user wants.

@@ -4,7 +4,7 @@ import type { EventStatus, Session, Sport, SportEvent } from './types';
 
 export type SessionState = 'upcoming' | 'live' | 'finished';
 
-export function sessionEndUtc(session: Pick<Session, 'kind' | 'startUtc'>): string {
+function sessionEndUtc(session: Pick<Session, 'kind' | 'startUtc'>): string {
   return addMinutesIso(session.startUtc, sessionDurationMinutes[session.kind]);
 }
 
@@ -74,7 +74,7 @@ export function upcomingSessions(event: SportEvent, now: Date): Session[] {
   return event.sessions.filter((s) => !s.isCancelled && sessionState(s, now) === 'upcoming');
 }
 
-/** The event's first and last session starts, for "Nov 20 to 22" ranges. */
+/** The event's first and last session starts, cancelled ones left out (null when every one is). */
 export function eventSpan(event: SportEvent): { firstUtc: string; lastUtc: string } | null {
   const starts = event.sessions.filter((s) => !s.isCancelled).map((s) => Date.parse(s.startUtc));
   if (starts.length === 0) return null;

@@ -26,7 +26,7 @@ export function bounds(points: readonly LngLat[]): [number, number, number, numb
   return [w, s, e, n];
 }
 
-/** A closed polygon ring around a point, `radiusM` metres out (for "buildings within" filters). */
+/** A closed polygon ring around a point, `radiusM` metres out. */
 export function circleRing(center: LngLat, radiusM: number, steps = 32): LngLat[] {
   const [lon, lat] = center;
   const dLat = radiusM / 111_320;
@@ -55,18 +55,6 @@ export function bboxRing([w, s, e, n]: [number, number, number, number], padM = 
     [W, N],
     [W, S],
   ];
-}
-
-/** Total length of a line in km. */
-export function lineLengthKm(line: readonly LngLat[]): number {
-  let km = 0;
-  for (let i = 1; i < line.length; i++) km += distanceKm(line[i - 1][1], line[i - 1][0], line[i][1], line[i][0]);
-  return km;
-}
-
-/** Longitude/latitude of the centre of a box. */
-export function boxCenter([w, s, e, n]: [number, number, number, number]): LngLat {
-  return [(w + e) / 2, (s + n) / 2];
 }
 
 /**

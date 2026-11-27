@@ -22,7 +22,7 @@ Checks, before calling anything done:
 ```bash
 npm run typecheck  # TypeScript 7 (tsc -b)
 npm run lint       # oxlint
-npm test           # vitest: time, night window, week grid, alarm rules, arena lookup
+npm test           # vitest: time and night, week grid, alarms and chimes, arenas, history and photos
 npm run build      # production build into dist/
 npm run preview    # serve the build
 ```
@@ -38,7 +38,7 @@ web app manifest in `public/`.
 | **Event** | The venue in interactive 3D (drag to turn, Ctrl or ⌘ + scroll to zoom). F1: the racing line glows gold and a car laps it; the circuit drawn north up; race-day weather hour by hour. UFC: the arena's own building in gold; the fight card. Every session in your time and the venue's, and the start "three ways" (you, the venue, UTC). Then the background: for a Grand Prix, a short read of who wins there, the race's story and every winner; for a fight night, the fighters' stories and numbers. Last, photos filling the window as tall panels, evenly shared until you point at one: for a Grand Prix two each of cars on track, the circuit and its town; for a fight night, three each of the arena and its city. Each is credited, and opens larger. |
 | **Season** | A turning night globe with a gold point at every venue still to come. Point at an event in the list to fly there. |
 | **Alarms** | The next wake-up on the dial, every alarm with its ring time, lead time you can change in place, cancel with undo, restore, remove. |
-| **Settings** | Account and phone number, **Your night** on a 24-hour dial you drag, time zone, 12/24-hour clock, temperature, sports and sessions, default lead time, **Chime on this computer**, theme (Midnight or Porcelain), map orbit. |
+| **Settings** | Account and phone number, **Your night** on a 24-hour dial you drag, time zone, 12/24-hour clock, temperature, sports and sessions, default lead time, **Chime on this computer**, theme (Automatic, By start time, Midnight or Porcelain), map orbit. |
 
 Keyboard: **⌘K / Ctrl K** or **/** searches events and sessions (Enter on a session opens its
 wake-up), **G then U / S / A** goes to Up next, Season, Alarms, **,** opens Settings, **N** sets a
@@ -113,18 +113,20 @@ editor, and MapLibre already gives a real 3D model of every venue.
 ```
 src/
   app/          App, router, shell, theme, smooth scroll, keyboard shortcuts, the chime
-  pages/        Up next, Event, Season, Alarms, Settings
+  pages/        Up next, Event, Season, Alarms, Settings, not found, error
   components/
     shell/      the top bar and the footer
     map/        VenueMap (MapLibre), its style, how to frame each venue
     schedule/   Hero, week chronograph, Coming up, follow panel, alarm button
     event/      circuit drawing, weather, fight card, history, fighters, photos
+    delft/      the painted line work and its traced pieces
     dialogs/    sign in, wake-up call, phone, Premium, search, shortcuts
     settings/   the night dial, the chime switch
     ui/         buttons, pills, clocks, dialogs, rows, icons, toasts
     bits/       vendored React Bits components
-  data/         Supabase client, API calls, public data (weather, circuits, arenas), queries
-  lib/          pure logic: time and night window, schedule, week grid, alarms, chime timing, geo
+  data/         Supabase client, API calls, public data (weather, circuits, arenas, history, photos), queries
+  hooks/        the clock tick, element size, page title, reduced motion, schedule, screensaver
+  lib/          pure logic: time and night window, schedule, week grid, alarms, chime timing, geo, venue buildings
   stores/       preferences, session, open dialog
   styles/       tokens and global CSS
 ```

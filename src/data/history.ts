@@ -30,7 +30,7 @@ function wiki(base: string, params: Record<string, string | number>): string {
 }
 
 /** Plain text from the bits of HTML in Commons metadata. */
-export function plain(html: string | undefined): string {
+function plain(html: string | undefined): string {
   return (html ?? '')
     .replace(/<[^>]*>/g, ' ')
     .replace(/&nbsp;/g, ' ')
@@ -109,7 +109,7 @@ export function wikiTitle(url: string | undefined): string | null {
 }
 
 /** A Wikipedia article's opening, by its title (redirects followed). */
-export async function fetchArticle(title: string, signal?: AbortSignal): Promise<Article | null> {
+async function fetchArticle(title: string, signal?: AbortSignal): Promise<Article | null> {
   const json = await getJson<WikiQuery>(wiki(WIKIPEDIA, { action: 'query', prop: 'extracts|info', inprop: 'url', exintro: 1, explaintext: 1, redirects: 1, titles: title }), signal);
   return articleFrom(json.query?.pages?.[0]);
 }
@@ -353,7 +353,7 @@ export interface Photo extends Credit {
   categories: string[];
 }
 
-/** A photo in an event's gallery, and the set it's in: "On track", the circuit, the town, a fighter. */
+/** A photo in an event's gallery, and the set it's in: "On track", the circuit, the arena, the town or city. */
 export interface GalleryPhoto extends Photo {
   group: string;
 }
@@ -502,9 +502,9 @@ export function gallerySources(event: SportEvent, history: F1History | null | un
 }
 
 /** Photos in each of a Grand Prix's three sets: cars on track, the circuit, the town. */
-export const PER_SET = 2;
+const PER_SET = 2;
 /** Photos in each of a fight night's two sets: its arena and its city. */
-export const PER_FIGHT_SET = 3;
+const PER_FIGHT_SET = 3;
 /** Years of a race asked about in one search. */
 const YEARS_PER_SEARCH = 12;
 /** How near the venue a town's or arena's article must be, so "Spa" is the town and not the bath. */
@@ -518,7 +518,7 @@ const CAR = new RegExp(`\\d[^|]* of ${NAME_PART}(?: ${NAME_PART})* [A-Z][\\p{L}'
 const AIR = /\b(aircraft|airport|airbus|boeing|airways|airlines)\b/i;
 
 /** The cars a photo is filed under, as model and driver: "Lotus E20 of Kimi Räikkönen". */
-export function carsIn(categories: string[]): { car: string; driver: string }[] {
+function carsIn(categories: string[]): { car: string; driver: string }[] {
   if (categories.some((c) => AIR.test(c))) return [];
   return categories
     .filter((c) => CAR.test(c))
@@ -596,7 +596,7 @@ export function otherHandSecond(photos: Photo[]): Photo[] {
 export const CAMERA_NAME = /^(?:[a-z]{1,5}[ _-]?\d{3,}|\d{6,}(?:[ _-]\d+)*)$/i;
 
 /** Photos captioned with only a camera's file name say where they're from instead. */
-export function captioned(photos: Photo[], where: (p: Photo) => string): Photo[] {
+function captioned(photos: Photo[], where: (p: Photo) => string): Photo[] {
   return photos.map((p) => (CAMERA_NAME.test(p.caption) ? { ...p, caption: where(p) } : p));
 }
 
